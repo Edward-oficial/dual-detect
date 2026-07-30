@@ -2,10 +2,9 @@ const express = require('express');
 const cors = require('cors');
 const crypto = require('crypto');
 const path = require('path');
-const { createClient } = require('@supabase/supabase-js');
 
 const app = express();
-app.set('trust proxy', true); // necesario en Render para leer la IP real del visitante
+app.set('trust proxy', true);
 app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
@@ -14,25 +13,24 @@ const HMAC_SECRET = process.env.DUAN_SECRET || 'duan-dev-secret-cambia-esto';
 const PORT = process.env.PORT || 3000;
 
 // ============================================================
-// Datos de Supabase (mismo proyecto de Sakura) — service_role key,
-// nunca se expone al navegador, solo vive acá en el server.
+// Clave para entrar al panel oculto de administración.
+// Cambiala por algo random y larga que solo sepas vos.
 // ============================================================
-const SUPABASE_URL = 'https://nrwwwhgsyfrrunobupha.supabase.co';
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5yd3d3aGdzeWZycnVub2J1cGhhIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc4NDY3NjUxNCwiZXhwIjoyMTAwMjUyNTE0fQ.jG9x6JQ8KSIt7d6cnHOJOeEWuKTxvYz1clU6bZf6t1g';
+const ADMIN_KEY = 'duan-admin-cambia-esto-tambien';
 // ============================================================
 
-const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+// --- Almacenamiento en memoria ---
+// siteKey -> { secretKey, createdAt, uses, verified, lastUsedAt }
+const siteKeys = new Map();
+const usedChallenges = new Set();
+const ipStats = new Map();
+const rateBuckets = new Map();
 
 const DEMO_SITE_KEY = 'duan_demo_sitekey_0001';
 const DEMO_SECRET_KEY = 'duan_demo_secret_0001';
-
-// se asegura de que exista la site key de demo al arrancar el server
-(async () => {
-  const { data } = await supabase.from('duan_site_keys').select('site_key').eq('site_key', DEMO_SITE_KEY).maybeSingle();
-  if (!data) {
-    await supabase.from('duan_site_keys').insert({ site_key: DEMO_SITE_KEY, secret_key: DEMO_SECRET_KEY });
-  }
-})();
+siteKeys.set(DEMO_SITE_KEY, {
+  secretKey: DEMO_SECRET_KEY, createdAt: Date.now(), uses: 0, verified: 0, lastUsedAt: null,
+});
 
 function sign(data) {
   return crypto.createHmac('sha256', HMAC_SECRET).update(data).digest('hex');
@@ -49,61 +47,35 @@ function ipHash(ip) {
   return crypto.createHash('sha256').update(ip).digest('hex').slice(0, 16);
 }
 
-// --- Site keys (Supabase) ---
-async function getSecretKey(siteKey) {
-  const { data } = await supabase.from('duan_site_keys').select('secret_key').eq('site_key', siteKey).maybeSingle();
-  return data ? data.secret_key : null;
+// registra que la site key se usó de verdad (el widget se cargó en una página real)
+function touchUsage(sitekey) {
+  const s = siteKeys.get(sitekey);
+  if (!s) return;
+  s.uses += 1;
+  s.lastUsedAt = Date.now();
 }
-async function siteKeyExists(siteKey) {
-  return (await getSecretKey(siteKey)) !== null;
-}
-async function createSiteKeyPair() {
-  const siteKey = genKey('duan_site');
-  const secretKey = genKey('duan_secret');
-  await supabase.from('duan_site_keys').insert({ site_key: siteKey, secret_key: secretKey });
-  return { siteKey, secretKey };
+function touchVerified(sitekey) {
+  const s = siteKeys.get(sitekey);
+  if (!s) return;
+  s.verified += 1;
 }
 
-// --- Reputación por IP (Supabase) ---
-async function getIpStats(ip) {
-  const hash = ipHash(ip);
-  const { data } = await supabase.from('duan_ip_stats').select('*').eq('ip_hash', hash).maybeSingle();
-  return data || { ip_hash: hash, fails: 0, blocked_until: null };
+function isBlocked(ip) {
+  const s = ipStats.get(ip);
+  return !!(s && s.blockedUntil && Date.now() < s.blockedUntil);
 }
-async function ipBlockInfo(ip) {
-  const s = await getIpStats(ip);
-  const until = s.blocked_until ? new Date(s.blocked_until).getTime() : 0;
-  const blocked = until > Date.now();
-  return { blocked, retryInMs: blocked ? until - Date.now() : 0 };
-}
-async function registerFail(ip) {
-  const s = await getIpStats(ip);
-  const fails = s.fails + 1;
-  let blockedUntil = s.blocked_until;
-  if (fails >= 4) {
-    blockedUntil = new Date(Date.now() + 15_000 * Math.min(fails - 3, 8)).toISOString();
+function registerFail(ip) {
+  const s = ipStats.get(ip) || { fails: 0, blockedUntil: 0 };
+  s.fails += 1;
+  if (s.fails >= 4) {
+    s.blockedUntil = Date.now() + 15_000 * Math.min(s.fails - 3, 8);
   }
-  await supabase.from('duan_ip_stats').upsert({
-    ip_hash: ipHash(ip), fails, blocked_until: blockedUntil, updated_at: new Date().toISOString(),
-  });
+  ipStats.set(ip, s);
 }
-async function registerSuccess(ip) {
-  await supabase.from('duan_ip_stats').upsert({
-    ip_hash: ipHash(ip), fails: 0, blocked_until: null, updated_at: new Date().toISOString(),
-  });
+function registerSuccess(ip) {
+  ipStats.set(ip, { fails: 0, blockedUntil: 0 });
 }
 
-// --- Challenges usados (Supabase, evita reuso) ---
-async function isChallengeUsed(id) {
-  const { data } = await supabase.from('duan_used_challenges').select('id').eq('id', id).maybeSingle();
-  return !!data;
-}
-async function markChallengeUsed(id) {
-  await supabase.from('duan_used_challenges').insert({ id });
-}
-
-// --- Rate limit simple por IP, en memoria (no crítico persistir, dura minutos) ---
-const rateBuckets = new Map();
 function rateLimited(ip, bucketKey, max, windowMs) {
   const key = `${bucketKey}:${ip}`;
   const now = Date.now();
@@ -115,22 +87,33 @@ function rateLimited(ip, bucketKey, max, windowMs) {
 
 app.get('/api/ping', (req, res) => res.json({ ok: true, ts: Date.now() }));
 
-app.post('/api/keys', async (req, res) => {
-  const { siteKey, secretKey } = await createSiteKeyPair();
+app.post('/api/keys', (req, res) => {
+  const siteKey = genKey('duan_site');
+  const secretKey = genKey('duan_secret');
+  siteKeys.set(siteKey, { secretKey, createdAt: Date.now(), uses: 0, verified: 0, lastUsedAt: null });
   res.json({ siteKey, secretKey });
 });
 
-app.post('/api/duan/precheck', async (req, res) => {
+app.post('/api/duan/precheck', (req, res) => {
   const ip = getClientIp(req);
 
-  const block = await ipBlockInfo(ip);
-  if (block.blocked) return res.json({ success: false, blocked: true, retryInMs: block.retryInMs });
-  if (rateLimited(ip, 'precheck', 30, 60_000)) return res.status(429).json({ error: 'demasiadas_solicitudes' });
+  if (isBlocked(ip)) {
+    const s = ipStats.get(ip);
+    return res.json({ success: false, blocked: true, retryInMs: s.blockedUntil - Date.now() });
+  }
+  if (rateLimited(ip, 'precheck', 30, 60_000)) {
+    return res.status(429).json({ error: 'demasiadas_solicitudes' });
+  }
 
-  const { sitekey, mouseMovements, timeOnPage, webdriver, languages, plugins, screenW, screenH, touch } = req.body || {};
-  if (!sitekey || !(await siteKeyExists(sitekey))) return res.status(400).json({ error: 'sitekey_invalida' });
+  const {
+    sitekey, mouseMovements, timeOnPage, webdriver,
+    languages, plugins, screenW, screenH, touch,
+  } = req.body || {};
 
-  const stats = await getIpStats(ip);
+  if (!sitekey || !siteKeys.has(sitekey)) return res.status(400).json({ error: 'sitekey_invalida' });
+  touchUsage(sitekey);
+
+  const stats = ipStats.get(ip) || { fails: 0 };
 
   let risk = 0;
   if (webdriver) risk += 60;
@@ -145,22 +128,27 @@ app.post('/api/duan/precheck', async (req, res) => {
     const now = Date.now();
     const tokenPayload = `${sitekey}.${now}.verified`;
     const token = Buffer.from(`${tokenPayload}.${sign(tokenPayload)}`).toString('base64');
-    await registerSuccess(ip);
+    registerSuccess(ip);
+    touchVerified(sitekey);
     return res.json({ success: true, frictionless: true, token });
   }
 
   res.json({ success: false, needsChallenge: true });
 });
 
-app.get('/api/duan/challenge', async (req, res) => {
+app.get('/api/duan/challenge', (req, res) => {
   const ip = getClientIp(req);
 
-  const block = await ipBlockInfo(ip);
-  if (block.blocked) return res.status(429).json({ error: 'ip_bloqueada', retryInMs: block.retryInMs });
-  if (rateLimited(ip, 'challenge', 20, 60_000)) return res.status(429).json({ error: 'demasiadas_solicitudes' });
+  if (isBlocked(ip)) {
+    const s = ipStats.get(ip);
+    return res.status(429).json({ error: 'ip_bloqueada', retryInMs: s.blockedUntil - Date.now() });
+  }
+  if (rateLimited(ip, 'challenge', 20, 60_000)) {
+    return res.status(429).json({ error: 'demasiadas_solicitudes' });
+  }
 
   const { sitekey } = req.query;
-  if (!sitekey || !(await siteKeyExists(sitekey))) return res.status(400).json({ error: 'sitekey_invalida' });
+  if (!sitekey || !siteKeys.has(sitekey)) return res.status(400).json({ error: 'sitekey_invalida' });
 
   const id = crypto.randomBytes(8).toString('hex');
   const target = 40 + Math.floor(Math.random() * 200);
@@ -171,12 +159,16 @@ app.get('/api/duan/challenge', async (req, res) => {
   res.json({ id, target, issuedAt, sitekey, sig });
 });
 
-app.post('/api/duan/verify', async (req, res) => {
+app.post('/api/duan/verify', (req, res) => {
   const ip = getClientIp(req);
 
-  const block = await ipBlockInfo(ip);
-  if (block.blocked) return res.json({ success: false, reason: 'ip_bloqueada', retryInMs: block.retryInMs });
-  if (rateLimited(ip, 'verify', 20, 60_000)) return res.status(429).json({ error: 'demasiadas_solicitudes' });
+  if (isBlocked(ip)) {
+    const s = ipStats.get(ip);
+    return res.json({ success: false, reason: 'ip_bloqueada', retryInMs: s.blockedUntil - Date.now() });
+  }
+  if (rateLimited(ip, 'verify', 20, 60_000)) {
+    return res.status(429).json({ error: 'demasiadas_solicitudes' });
+  }
 
   const {
     id, target, issuedAt, sitekey, sig,
@@ -184,13 +176,13 @@ app.post('/api/duan/verify', async (req, res) => {
     webdriver, languages, plugins, screenW, screenH, touch, online,
   } = req.body || {};
 
-  const fail = async (reason) => {
-    await registerFail(ip);
+  const fail = (reason) => {
+    registerFail(ip);
     return res.json({ success: false, reason });
   };
 
-  if (!id || !sitekey || !(await siteKeyExists(sitekey))) return fail('sitekey_invalida');
-  if (await isChallengeUsed(id)) return fail('challenge_reutilizado');
+  if (!id || !sitekey || !siteKeys.has(sitekey)) return fail('sitekey_invalida');
+  if (usedChallenges.has(id)) return fail('challenge_reutilizado');
 
   const payload = `${id}.${target}.${issuedAt}.${sitekey}.${ipHash(ip)}`;
   if (sign(payload) !== sig) return fail('firma_invalida_o_ip_distinta');
@@ -200,7 +192,8 @@ app.post('/api/duan/verify', async (req, res) => {
   if (elapsed > 2 * 60 * 1000) return fail('challenge_expirado');
   if (elapsed < 350) return fail('demasiado_rapido');
 
-  await markChallengeUsed(id);
+  usedChallenges.add(id);
+  setTimeout(() => usedChallenges.delete(id), 5 * 60 * 1000);
 
   let score = 0;
   const reasons = [];
@@ -231,17 +224,18 @@ app.post('/api/duan/verify', async (req, res) => {
   const success = score < 45;
 
   if (!success) {
-    await registerFail(ip);
+    registerFail(ip);
     return res.json({ success: false, score, reasons });
   }
 
-  await registerSuccess(ip);
+  registerSuccess(ip);
+  touchVerified(sitekey);
   const tokenPayload = `${sitekey}.${now}.verified`;
   const token = Buffer.from(`${tokenPayload}.${sign(tokenPayload)}`).toString('base64');
   res.json({ success: true, score, token });
 });
 
-app.post('/api/duan/siteverify', async (req, res) => {
+app.post('/api/duan/siteverify', (req, res) => {
   const { token, secret } = req.body || {};
   if (!token || !secret) return res.status(400).json({ success: false });
 
@@ -257,12 +251,28 @@ app.post('/api/duan/siteverify', async (req, res) => {
   const [sitekey, ts, verdict] = parts;
   const expected = sign(`${sitekey}.${ts}.${verdict}`);
 
-  const realSecret = await getSecretKey(sitekey);
-  const validSecret = realSecret === secret;
+  const record = siteKeys.get(sitekey);
+  const validSecret = record && record.secretKey === secret;
   const validSig = sig === expected;
   const notExpired = Date.now() - Number(ts) < 10 * 60 * 1000;
 
   res.json({ success: Boolean(validSecret && validSig && notExpired && verdict === 'verified') });
+});
+
+// --- Panel oculto: no está linkeado en ningún menú, solo lo abrís vos con la URL directa ---
+app.get('/api/admin/keys', (req, res) => {
+  if (req.query.key !== ADMIN_KEY) {
+    return res.status(401).json({ error: 'no autorizado' });
+  }
+  const list = Array.from(siteKeys.entries()).map(([siteKey, v]) => ({
+    siteKey,
+    createdAt: v.createdAt,
+    uses: v.uses,
+    verified: v.verified,
+    lastUsedAt: v.lastUsedAt,
+  }));
+  list.sort((a, b) => (b.lastUsedAt || 0) - (a.lastUsedAt || 0));
+  res.json({ keys: list });
 });
 
 app.listen(PORT, () => console.log(`Duan corriendo en el puerto ${PORT}`));
