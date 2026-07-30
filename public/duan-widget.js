@@ -3,21 +3,21 @@
   const API_BASE = new URL(scriptEl.src).origin;
 
   const STYLE = `
-  .duan-box{font-family:Inter,system-ui,sans-serif;background:#1c1414;border:1px solid #3d1f1f;border-radius:12px;padding:16px;max-width:320px;color:#f2e6d2;box-sizing:border-box}
+  .duan-box{font-family:Inter,system-ui,sans-serif;background:#0e0e0e;border:1px solid #232323;border-radius:12px;padding:16px;max-width:320px;color:#f2e6d2;box-sizing:border-box}
   .duan-box.locked{opacity:.55;pointer-events:none}
   .duan-row{display:flex;align-items:center;gap:12px;cursor:pointer}
-  .duan-checkbox{width:30px;height:30px;border:2px solid #d4af37;border-radius:50%;position:relative;flex-shrink:0;background:#170f0f;transition:border-color .2s,background .2s}
+  .duan-checkbox{width:30px;height:30px;border:2px solid #d4af37;border-radius:50%;position:relative;flex-shrink:0;background:#000;transition:border-color .2s,background .2s}
   .duan-checkbox.verified{border-color:#b91c1c;background:radial-gradient(circle at 35% 30%,#e8544a,#b91c1c 70%)}
   .duan-checkbox.busy{border-color:#b91c1c}
   .duan-spinner{position:absolute;inset:3px;border:2px solid transparent;border-top-color:#b91c1c;border-radius:50%;animation:duan-spin .7s linear infinite}
   .duan-check{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#f2e6d2;font-size:14px}
   @keyframes duan-spin{to{transform:rotate(360deg)}}
   .duan-label{font-size:13px;font-weight:500}
-  .duan-label small{display:block;color:#b89a7a;font-size:10.5px;font-weight:400;margin-top:2px}
-  .duan-title{display:flex;align-items:center;gap:8px;font-size:12px;color:#b89a7a;margin-bottom:10px}
+  .duan-label small{display:block;color:#8a7360;font-size:10.5px;font-weight:400;margin-top:2px}
+  .duan-title{display:flex;align-items:center;gap:8px;font-size:12px;color:#8a7360;margin-bottom:10px}
   .duan-title b{color:#d4af37;font-family:'Noto Serif SC',serif;font-size:15px}
-  .duan-track{position:relative;height:52px;border-radius:10px;overflow:hidden;border:1px solid #3d1f1f;
-    background-color:#170f0f;
+  .duan-track{position:relative;height:52px;border-radius:10px;overflow:hidden;border:1px solid #232323;
+    background-color:#000;
     background-image:
       radial-gradient(circle at 12% 30%, rgba(212,175,55,.14) 0 2px, transparent 3px),
       radial-gradient(circle at 34% 68%, rgba(212,175,55,.14) 0 2px, transparent 3px),
@@ -26,7 +26,7 @@
       radial-gradient(circle at 94% 32%, rgba(212,175,55,.14) 0 2px, transparent 3px);
   }
   .duan-slot{position:absolute;top:8px;width:36px;height:36px;border-radius:50%;border:2px dashed #d4af37;opacity:.65;box-sizing:border-box}
-  .duan-piece{position:absolute;top:8px;left:6px;width:36px;height:36px;border-radius:50%;cursor:grab;touch-action:none;background:#5c4a4a;box-shadow:inset 0 0 0 2px rgba(0,0,0,.25);transition:background .2s,box-shadow .2s}
+  .duan-piece{position:absolute;top:8px;left:6px;width:36px;height:36px;border-radius:50%;cursor:grab;touch-action:none;background:#3a3a3a;box-shadow:inset 0 0 0 2px rgba(0,0,0,.25);transition:background .2s,box-shadow .2s}
   .duan-piece:active{cursor:grabbing}
   .duan-piece.solved{background:radial-gradient(circle at 35% 30%,#e8544a,#b91c1c 70%);box-shadow:0 0 0 3px rgba(185,28,28,.3),inset 0 0 8px rgba(0,0,0,.25)}
   .duan-msg{margin-top:8px;font-size:11px;color:#8a7360;min-height:14px}
