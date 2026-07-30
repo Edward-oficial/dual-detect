@@ -4,12 +4,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Duan Panel</title><style>
 :root{
-  --bg:#f2f2f7;
-  --card:#ffffff;
-  --text:#1c1c1e;
+  --bg:#000000;
+  --card:#1c1c1e;
+  --text:#f2f2f7;
   --muted:#8e8e93;
-  --border:#e5e5ea;
-  --accent:#007aff;
+  --border:#2c2c2e;
+  --accent:#0a84ff;
 }
 
 *{
@@ -24,20 +24,20 @@ body{
   color:var(--text);
 }
 
-/* HEADER estilo iOS */
+/* HEADER estilo iOS oscuro */
 .header{
   padding:16px;
   text-align:center;
   font-weight:600;
   font-size:17px;
-  background:rgba(255,255,255,0.8);
+  background:rgba(28,28,30,0.8);
   backdrop-filter:blur(10px);
   border-bottom:1px solid var(--border);
   position:sticky;
   top:0;
 }
 
-/* CONTENIDO */
+/* CONTENIDO FULL */
 .container{
   padding:16px;
   max-width:600px;
@@ -56,25 +56,29 @@ h1{
   margin-bottom:20px;
 }
 
-/* CARDS estilo iOS */
+/* CARDS estilo iOS dark */
 .card{
   background:var(--card);
-  border-radius:14px;
+  border-radius:16px;
   padding:16px;
   margin-bottom:16px;
   border:1px solid var(--border);
 }
 
-/* BOTÓN estilo iOS */
+/* BOTÓN iOS */
 .btn{
   width:100%;
-  padding:12px;
+  padding:13px;
   border-radius:12px;
   border:none;
   background:var(--accent);
   color:#fff;
   font-size:15px;
   font-weight:600;
+}
+
+.btn:active{
+  opacity:0.8;
 }
 
 /* KEYS */
@@ -101,12 +105,13 @@ h1{
 }
 
 pre{
-  background:#f2f2f7;
+  background:#111;
   padding:10px;
   border-radius:10px;
   font-size:12px;
   overflow-x:auto;
   margin-top:6px;
+  color:#d1d5db;
 }
 </style></head><body><div class="header">Duan Verify</div><div class="container"><h1>Verificación</h1>
 <p class="lead">Protección anti bots basada en comportamiento.</p><div class="card">
@@ -114,8 +119,7 @@ pre{
 </div><div class="card">
   <button class="btn" id="genBtn">Generar claves</button>
   <div id="keysOut"></div>
-</div><div class="card">
-  <div class="step">
+</div><div class="card">  <div class="step">
     <b>1. Agrega el widget</b>
 <pre>&lt;div class="duan-widget-container" data-sitekey="TU_SITE_KEY"&gt;&lt;/div&gt;
 &lt;script src="https://tu-app.onrender.com/duan-widget.js"&gt;&lt;/script&gt;</pre>
@@ -133,8 +137,7 @@ pre{
   </div>  <div class="step">
     <b>3. Bloquea bots</b>
 <pre>if (!success) return res.status(403).json({ error: "verificación fallida" });</pre>
-  </div>
-</div></div><script src="/duan-widget.js"></script><script>
+  </div></div></div><script src="/duan-widget.js"></script><script>
 document.getElementById('genBtn').onclick = async () => {
   const btn = document.getElementById('genBtn');
   btn.textContent = "Generando...";
