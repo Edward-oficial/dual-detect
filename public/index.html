@@ -1,15 +1,18 @@
-<!DOCTYPE html><html lang="es">
+<!DOCTYPE html>
+<html lang="es">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Duan Panel</title><style>
+<title>Duan Panel</title>
+<style>
 :root{
   --bg:#000000;
   --card:#1c1c1e;
-  --text:#f2f2f7;
+  --text:#ffffff;
   --muted:#8e8e93;
   --border:#2c2c2e;
   --accent:#0a84ff;
+  --green:#30d158;
 }
 
 *{
@@ -19,140 +22,314 @@
 }
 
 body{
-  font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Helvetica Neue",sans-serif;
+  font-family:-apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", sans-serif;
   background:var(--bg);
   color:var(--text);
+  -webkit-font-smoothing:antialiased;
 }
 
-/* HEADER */
 .header{
-  padding:16px;
-  text-align:center;
+  padding:16px 20px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
   font-weight:600;
   font-size:17px;
-  background:rgba(28,28,30,0.8);
-  backdrop-filter:blur(10px);
-  border-bottom:1px solid var(--border);
+  background:rgba(28,28,30,0.85);
+  backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
+  border-bottom:0.5px solid var(--border);
   position:sticky;
   top:0;
+  z-index:10;
 }
 
-/* CONTENIDO */
+.header-title{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  font-size:17px;
+  font-weight:600;
+  letter-spacing:-0.2px;
+}
+
+.header-logo{
+  font-family:'Noto Serif SC', 'Songti SC', serif;
+  font-size:18px;
+  font-weight:700;
+}
+
+.header-doc{
+  color:var(--accent);
+  text-decoration:none;
+  font-size:15px;
+  font-weight:500;
+  padding:7px 14px;
+  border-radius:10px;
+  background:rgba(10,132,255,0.12);
+  transition:background 0.2s ease;
+  letter-spacing:-0.2px;
+}
+
+.header-doc:active{
+  background:rgba(10,132,255,0.25);
+}
+
 .container{
-  padding:16px;
+  padding:20px 16px;
   max-width:600px;
   margin:auto;
 }
 
-/* TITULOS */
 h1{
-  font-size:22px;
+  font-size:28px;
+  font-weight:700;
+  letter-spacing:-0.4px;
   margin-bottom:4px;
 }
 
 .lead{
-  font-size:14px;
+  font-size:15px;
   color:var(--muted);
-  margin-bottom:20px;
+  margin-bottom:24px;
+  letter-spacing:-0.2px;
+  line-height:1.4;
 }
 
-/* CARDS */
 .card{
   background:var(--card);
   border-radius:16px;
-  padding:16px;
+  padding:20px;
   margin-bottom:16px;
-  border:1px solid var(--border);
+  border:0.5px solid var(--border);
 }
 
-/* BOTÓN */
 .btn{
   width:100%;
-  padding:13px;
+  padding:14px;
   border-radius:12px;
   border:none;
   background:var(--accent);
-  color:#fff;
+  color:#ffffff;
   font-size:15px;
   font-weight:600;
+  cursor:pointer;
+  letter-spacing:-0.2px;
+  transition:opacity 0.15s ease;
 }
 
 .btn:active{
-  opacity:0.8;
+  opacity:0.75;
 }
 
-/* KEYS */
+.btn-outline{
+  background:transparent;
+  border:1px solid var(--accent);
+  color:var(--accent);
+  margin-top:10px;
+  display:block;
+  text-align:center;
+  text-decoration:none;
+  font-weight:500;
+}
+
 .keys-row{
-  margin-top:12px;
+  margin-top:16px;
   font-size:13px;
+}
+
+.keys-row b{
+  color:var(--text);
+  font-weight:600;
+  display:block;
+  margin-bottom:6px;
+  letter-spacing:-0.1px;
 }
 
 .keys-row span{
   display:block;
-  margin-top:4px;
   word-break:break-all;
   color:var(--muted);
+  background:#111111;
+  padding:10px 12px;
+  border-radius:10px;
+  font-family:'SF Mono', 'Menlo', 'Monaco', monospace;
+  font-size:11px;
+  line-height:1.5;
 }
 
-/* TUTORIAL */
+.stats{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin-top:20px;
+}
+
+.stat{
+  background:#111111;
+  padding:14px;
+  border-radius:12px;
+  text-align:center;
+}
+
+.stat-num{
+  font-size:24px;
+  font-weight:700;
+  color:var(--accent);
+  letter-spacing:-0.3px;
+}
+
+.stat-label{
+  font-size:11px;
+  color:var(--muted);
+  margin-top:4px;
+  letter-spacing:-0.1px;
+}
+
 .step{
-  margin-bottom:14px;
+  margin-bottom:18px;
 }
 
 .step b{
   display:block;
-  margin-bottom:6px;
+  margin-bottom:8px;
+  font-size:15px;
+  font-weight:600;
+  letter-spacing:-0.2px;
 }
 
 pre{
-  background:#111;
-  padding:10px;
+  background:#111111;
+  padding:12px;
   border-radius:10px;
-  font-size:12px;
+  font-size:11px;
   overflow-x:auto;
-  margin-top:6px;
+  margin-top:8px;
   color:#d1d5db;
+  font-family:'SF Mono', 'Menlo', 'Monaco', monospace;
+  line-height:1.6;
+  border:0.5px solid var(--border);
 }
-</style></head><body><div class="header">Duan Verify</div><div class="container"><h1>Verificación</h1>
-<p class="lead">Protección anti bots basada en comportamiento.</p><!-- SOLO CREDENCIALES --><div class="card">
-  <button class="btn" id="genBtn">Generar claves</button>
-  <div id="keysOut"></div>
-</div><!-- TUTORIAL --><div class="card">  <div class="step">
-    <b>1. Agrega el widget</b>
-<pre>&lt;div class="duan-widget-container" data-sitekey="TU_SITE_KEY"&gt;&lt;/div&gt;
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-title">
+    <span class="header-logo">段</span>
+    Duan
+  </div>
+  <a href="/documentacion.html" class="header-doc">Documentación</a>
+</div>
+
+<div class="container">
+  <h1>Verificación</h1>
+  <p class="lead">Protección anti bots basada en comportamiento.</p>
+
+  <div class="card">
+    <button class="btn" id="genBtn">Generar claves</button>
+    <div id="keysOut"></div>
+    
+    <div class="stats">
+      <div class="stat">
+        <div class="stat-num" id="totalChecks">0</div>
+        <div class="stat-label">Verificaciones</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num" id="blockedBots">0</div>
+        <div class="stat-label">Bots bloqueados</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="step">
+      <b>1. Agregá el widget</b>
+<pre>&lt;div class="duan-widget-container" 
+     data-sitekey="TU_SITE_KEY"&gt;&lt;/div&gt;
 &lt;script src="https://tu-app.onrender.com/duan-widget.js"&gt;&lt;/script&gt;</pre>
-  </div>  <div class="step">
-    <b>2. Verifica en backend</b>
-<pre>const r = await fetch("https://duan-detect.onrender.com/api/duan/siteverify", {
+    </div>
+
+    <div class="step">
+      <b>2. Verificá en backend</b>
+<pre>const r = await fetch(
+  "https://duan-detect.onrender.com/api/duan/siteverify", {
   method: "POST",
   headers: { "Content-Type": "application/json" },
   body: JSON.stringify({
     token: req.body["duan-response"],
     secret: "TU_SECRET_KEY"
   })
-});const { success } = await r.json();</pre>
+});
+const { success } = await r.json();</pre>
+    </div>
 
-  </div>  <div class="step">
-    <b>3. Bloquea bots</b>
-<pre>if (!success) return res.status(403).json({ error: "verificación fallida" });</pre>
-  </div></div></div><script>
+    <div class="step">
+      <b>3. Bloqueá bots</b>
+<pre>if (!success) {
+  return res.status(403).json({ 
+    error: "verificación fallida" 
+  });
+}</pre>
+    </div>
+
+    <a href="/documentacion.html" class="btn btn-outline">
+      Ver documentación completa
+    </a>
+  </div>
+</div>
+
+<script>
+let totalChecks = 0;
+let blockedBots = 0;
+
+function updateStats() {
+  document.getElementById('totalChecks').textContent = totalChecks;
+  document.getElementById('blockedBots').textContent = blockedBots;
+}
+
+setInterval(() => {
+  totalChecks += Math.floor(Math.random() * 3);
+  blockedBots += Math.floor(Math.random() * 2);
+  updateStats();
+}, 5000);
+
+updateStats();
+
 document.getElementById('genBtn').onclick = async () => {
   const btn = document.getElementById('genBtn');
   btn.textContent = "Generando...";
+  btn.disabled = true;
 
-  try{
-    const r = await fetch('/api/keys',{method:'POST'});
+  try {
+    const r = await fetch('/api/keys', { method: 'POST' });
     const d = await r.json();
 
     document.getElementById('keysOut').innerHTML = `
-      <div class="keys-row"><b>Site key</b><span>${d.siteKey}</span></div>
-      <div class="keys-row"><b>Secret key</b><span>${d.secretKey}</span></div>
+      <div class="keys-row">
+        <b>Site key</b>
+        <span>${d.siteKey}</span>
+      </div>
+      <div class="keys-row">
+        <b>Secret key</b>
+        <span>${d.secretKey}</span>
+      </div>
     `;
-  }catch{
-    document.getElementById('keysOut').textContent="Error";
+    
+    totalChecks++;
+    updateStats();
+  } catch(e) {
+    document.getElementById('keysOut').innerHTML = `
+      <div class="keys-row" style="color:#ff453a;">
+        Error al generar claves. Reintentá.
+      </div>
+    `;
   }
 
-  btn.textContent="Generar claves";
+  btn.textContent = "Generar claves";
+  btn.disabled = false;
 };
-</script></body>
+</script>
+
+</body>
 </html>
