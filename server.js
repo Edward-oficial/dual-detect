@@ -14,16 +14,14 @@ const HMAC_SECRET = process.env.DUAN_SECRET || 'duan-dev-secret-cambia-esto';
 const PORT = process.env.PORT || 3000;
 
 // ============================================================
-// PONÉ ACÁ TUS DATOS DE SUPABASE (el mismo proyecto de Sakura)
+// Datos de Supabase (mismo proyecto de Sakura) — service_role key,
+// nunca se expone al navegador, solo vive acá en el server.
 // ============================================================
 const SUPABASE_URL = 'https://nrwwwhgsyfrrunobupha.supabase.co';
-const SUPABASE_SERVICE_KEY = 'PEGA_ACA_TU_SERVICE_ROLE_KEY';
-// Para conseguir la service_role key:
-// Supabase > tu proyecto > Project Settings (engranaje) > API
-// > "Project API keys" > copiá la que dice "service_role" (NO la "anon public")
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5yd3d3aGdzeWZycnVub2J1cGhhIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc4NDY3NjUxNCwiZXhwIjoyMTAwMjUyNTE0fQ.jG9x6JQ8KSIt7d6cnHOJOeEWuKTxvYz1clU6bZf6t1g';
 // ============================================================
 
-const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY);
+const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
 const DEMO_SITE_KEY = 'duan_demo_sitekey_0001';
 const DEMO_SECRET_KEY = 'duan_demo_secret_0001';
