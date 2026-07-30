@@ -2,244 +2,186 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Duan — Panel</title><style>
-:root {
-  --bg: #0f172a;
-  --panel: #111827;
-  --soft: #1f2937;
-  --text: #e5e7eb;
-  --muted: #9ca3af;
-  --accent: #3b82f6;
+<title>Duan Panel</title><style>
+:root{
+  --bg:#f5f5f7;
+  --card:#ffffff;
+  --text:#1d1d1f;
+  --muted:#6e6e73;
+  --border:#e5e5ea;
+  --accent:#0071e3;
 }
 
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
+*{box-sizing:border-box;margin:0;padding:0;}
+
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text",sans-serif;
+  background:var(--bg);
+  color:var(--text);
 }
 
-body {
-  background: var(--bg);
-  color: var(--text);
-  font-family: system-ui, sans-serif;
+/* CENTRADO */
+.wrap{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  padding:20px;
+  gap:30px;
+}
+
+/* iPHONE MOCK */
+.phone{
+  width:340px;
+  border-radius:30px;
+  background:#000;
+  padding:12px;
+  box-shadow:0 20px 60px rgba(0,0,0,.2);
+}
+
+.screen{
+  background:var(--bg);
+  border-radius:22px;
+  overflow:hidden;
 }
 
 /* HEADER */
-header {
-  padding: 16px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+.header{
+  padding:14px;
+  font-weight:600;
+  text-align:center;
+  border-bottom:1px solid var(--border);
 }
 
-.wordmark {
-  font-weight: 700;
-  font-size: 18px;
+/* CONTENT */
+.content{
+  padding:16px;
 }
 
-.tag {
-  font-size: 12px;
-  color: var(--muted);
+h1{
+  font-size:18px;
+  margin-bottom:4px;
 }
 
-/* WRAP */
-.wrap {
-  width: 100%;
-  padding: 16px;
+.lead{
+  font-size:13px;
+  color:var(--muted);
+  margin-bottom:16px;
 }
 
-/* TITLES */
-h1 {
-  font-size: 22px;
-  margin-bottom: 6px;
-}
-
-.lead {
-  font-size: 13px;
-  color: var(--muted);
-  margin-bottom: 20px;
-}
-
-/* CARDS */
-.card {
-  background: var(--panel);
-  border-radius: 12px;
-  margin-bottom: 16px;
-  overflow: hidden;
-}
-
-.card-header {
-  padding: 14px;
-  font-size: 13px;
-  color: var(--muted);
-  border-bottom: 1px solid #1f2937;
-}
-
-.card-body {
-  padding: 14px;
+/* CARD */
+.card{
+  background:var(--card);
+  border-radius:14px;
+  padding:14px;
+  margin-bottom:14px;
+  border:1px solid var(--border);
 }
 
 /* BUTTON */
-.btn {
-  width: 100%;
-  padding: 12px;
-  border-radius: 8px;
-  border: none;
-  background: var(--accent);
-  color: white;
-  font-weight: 600;
-  cursor: pointer;
+.btn{
+  width:100%;
+  padding:10px;
+  border-radius:10px;
+  border:none;
+  background:var(--accent);
+  color:#fff;
+  font-weight:600;
 }
 
 /* KEYS */
-.keys-row {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  padding: 10px 0;
-  border-bottom: 1px solid #1f2937;
+.keys-row{
+  margin-top:10px;
+  font-size:12px;
 }
 
-.keys-row b {
-  font-size: 12px;
-  color: var(--muted);
+.keys-row span{
+  display:block;
+  word-break:break-all;
+  margin-top:4px;
+  color:var(--muted);
 }
 
-.keys-row span {
-  font-size: 12px;
-  word-break: break-all;
+/* TUTORIAL */
+.tutorial{
+  max-width:600px;
 }
 
-/* WARNING */
-.warn {
-  margin-top: 10px;
-  font-size: 12px;
-  padding: 10px;
-  border-radius: 6px;
-  background: #3f1d1d;
-  color: #fca5a5;
+.step{
+  background:#fff;
+  padding:14px;
+  border-radius:12px;
+  margin-bottom:10px;
+  border:1px solid var(--border);
 }
 
-/* TABLE MOBILE */
-table {
-  width: 100%;
+.step b{
+  display:block;
+  margin-bottom:6px;
 }
 
-tr {
-  display: block;
-  margin-bottom: 12px;
-  background: var(--soft);
-  border-radius: 10px;
-  padding: 10px;
+pre{
+  background:#f2f2f7;
+  padding:10px;
+  border-radius:8px;
+  font-size:12px;
+  overflow-x:auto;
+  margin-top:6px;
 }
+</style></head><body><div class="wrap"><!-- iPHONE VIEW --><div class="phone">
+  <div class="screen"><div class="header">Duan Verify</div>
 
-td {
-  display: block;
-  font-size: 13px;
-  margin-bottom: 6px;
-}
+<div class="content">
+  <h1>Verificación</h1>
+  <p class="lead">Protección anti bots por comportamiento.</p>
 
-.step-n {
-  font-weight: 700;
-  color: var(--accent);
-}
-
-/* CODE */
-pre {
-  font-size: 11px;
-  padding: 10px;
-  overflow-x: auto;
-  background: #020617;
-  border-radius: 8px;
-  margin-top: 6px;
-}
-
-code {
-  background: #020617;
-  padding: 2px 6px;
-  border-radius: 4px;
-}
-
-/* FOOTER */
-footer {
-  text-align: center;
-  font-size: 11px;
-  color: var(--muted);
-  margin-top: 20px;
-}
-</style></head><body><header>
-  <div class="wordmark">Duan</div>
-  <div class="tag">Anti-bots</div>
-</header><div class="wrap"><h1>Panel de verificación</h1>
-<p class="lead">Sistema de verificación por comportamiento antes de permitir envíos.</p><div class="card">
-  <div class="card-header">Vista previa</div>
-  <div class="card-body">
+  <div class="card">
     <div class="duan-widget-container" data-sitekey="demo"></div>
   </div>
-</div><div class="card">
-  <div class="card-header">Credenciales</div>
-  <div class="card-body">
+
+  <div class="card">
     <button class="btn" id="genBtn">Generar claves</button>
     <div id="keysOut"></div>
-    <div class="warn" id="warnMsg" style="display:none">
-      Guarda la secret key ahora.
-    </div>
   </div>
-</div><div class="card">
-  <div class="card-header">Guía</div>
-  <table>
-    <tr>
-      <td class="step-n">1</td>
-      <td>
-        Agrega el widget:
-<pre>&lt;div class="duan-widget-container" data-sitekey="TU_KEY"&gt;&lt;/div&gt;
-&lt;script src="/duan-widget.js"&gt;&lt;/script&gt;</pre>
-      </td>
-    </tr><tr>
-  <td class="step-n">2</td>
-  <td>
-    Valida en backend:
 
-<pre>const r = await fetch("/api/verify", {
+</div>
+
+  </div>
+</div><!-- TUTORIAL --><div class="tutorial">  <h2 style="margin-bottom:10px;">Guía rápida</h2>  <div class="step">
+    <b>1. Agrega el widget</b>
+<pre>&lt;div class="duan-widget-container" data-sitekey="TU_SITE_KEY"&gt;&lt;/div&gt;
+&lt;script src="https://tu-app.onrender.com/duan-widget.js"&gt;&lt;/script&gt;</pre>
+  </div>  <div class="step">
+    <b>2. Verifica en backend</b>
+<pre>const r = await fetch("https://duan-detect.onrender.com/api/duan/siteverify", {
   method: "POST",
-  body: JSON.stringify({ token })
-});</pre>  </td>
-</tr>
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({
+    token: req.body["duan-response"],
+    secret: "TU_SECRET_KEY"
+  })
+});const { success } = await r.json();</pre>
 
-<tr>
-  <td class="step-n">3</td>
-  <td>
-    Bloquea si falla:
-
-<pre>if (!success) return 403;</pre>  </td>
-</tr>
-
-  </table>
-</div><footer id="originFooter"></footer></div><script src="/duan-widget.js"></script><script>
-document.getElementById('originFooter').textContent = location.host;
-
+  </div>  <div class="step">
+    <b>3. Bloquea bots</b>
+<pre>if (!success) return res.status(403).json({ error: "verificación fallida" });</pre>
+  </div></div></div><script src="/duan-widget.js"></script><script>
 document.getElementById('genBtn').onclick = async () => {
   const btn = document.getElementById('genBtn');
-  btn.disabled = true;
   btn.textContent = "Generando...";
 
-  try {
-    const r = await fetch('/api/keys', { method: 'POST' });
+  try{
+    const r = await fetch('/api/keys',{method:'POST'});
     const d = await r.json();
 
     document.getElementById('keysOut').innerHTML = `
       <div class="keys-row"><b>Site key</b><span>${d.siteKey}</span></div>
       <div class="keys-row"><b>Secret key</b><span>${d.secretKey}</span></div>
     `;
-
-    document.getElementById('warnMsg').style.display = 'block';
-
-  } catch {
-    document.getElementById('keysOut').textContent = 'Error';
+  }catch{
+    document.getElementById('keysOut').textContent="Error";
   }
 
-  btn.disabled = false;
-  btn.textContent = "Generar claves";
+  btn.textContent="Generar claves";
 };
 </script></body>
 </html>
