@@ -232,11 +232,11 @@ pre{
     
     <div class="stats">
       <div class="stat">
-        <div class="stat-num" id="totalChecks">0</div>
+        <div class="stat-num" id="totalChecks">--</div>
         <div class="stat-label">Verificaciones</div>
       </div>
       <div class="stat">
-        <div class="stat-num" id="blockedBots">0</div>
+        <div class="stat-num" id="blockedBots">--</div>
         <div class="stat-label">Bots bloqueados</div>
       </div>
     </div>
@@ -280,21 +280,19 @@ const { success } = await r.json();</pre>
 </div>
 
 <script>
-let totalChecks = 0;
-let blockedBots = 0;
-
-function updateStats() {
-  document.getElementById('totalChecks').textContent = totalChecks;
-  document.getElementById('blockedBots').textContent = blockedBots;
+async function cargarStats() {
+  try {
+    const r = await fetch('/api/stats');
+    const data = await r.json();
+    document.getElementById('totalChecks').textContent = data.total_checks.toLocaleString();
+    document.getElementById('blockedBots').textContent = data.blocked_bots.toLocaleString();
+  } catch(e) {
+    document.getElementById('totalChecks').textContent = '0';
+    document.getElementById('blockedBots').textContent = '0';
+  }
 }
 
-setInterval(() => {
-  totalChecks += Math.floor(Math.random() * 3);
-  blockedBots += Math.floor(Math.random() * 2);
-  updateStats();
-}, 5000);
-
-updateStats();
+cargarStats();
 
 document.getElementById('genBtn').onclick = async () => {
   const btn = document.getElementById('genBtn');
@@ -316,8 +314,8 @@ document.getElementById('genBtn').onclick = async () => {
       </div>
     `;
     
-    totalChecks++;
-    updateStats();
+    cargarStats();
+    
   } catch(e) {
     document.getElementById('keysOut').innerHTML = `
       <div class="keys-row" style="color:#ff453a;">
