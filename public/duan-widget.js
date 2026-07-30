@@ -3,35 +3,35 @@
   const API_BASE = new URL(scriptEl.src).origin;
 
   const STYLE = `
-  .duan-box{font-family:Inter,system-ui,sans-serif;background:#0e0e0e;border:1px solid #232323;border-radius:12px;padding:16px;max-width:320px;color:#f2e6d2;box-sizing:border-box}
+  .duan-box{font-family:Arial,Helvetica,sans-serif;background:#fff;border:1px solid #d5dee5;border-radius:4px;padding:0;width:100%;max-width:302px;color:#1f2937;box-sizing:border-box;box-shadow:0 0 1px rgba(0,0,0,.08)}
   .duan-box.locked{opacity:.55;pointer-events:none}
-  .duan-row{display:flex;align-items:center;gap:12px;cursor:pointer}
-  .duan-checkbox{width:30px;height:30px;border:2px solid #d4af37;border-radius:50%;position:relative;flex-shrink:0;background:#000;transition:border-color .2s,background .2s}
-  .duan-checkbox.verified{border-color:#b91c1c;background:radial-gradient(circle at 35% 30%,#e8544a,#b91c1c 70%)}
-  .duan-checkbox.busy{border-color:#b91c1c}
-  .duan-spinner{position:absolute;inset:3px;border:2px solid transparent;border-top-color:#b91c1c;border-radius:50%;animation:duan-spin .7s linear infinite}
-  .duan-check{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#f2e6d2;font-size:14px}
+  .duan-hc{display:flex;align-items:center;padding:13px 12px}
+  .duan-hc-left{display:flex;align-items:center;gap:11px;flex:1;min-width:0}
+  .duan-row{display:flex;align-items:center;gap:11px;cursor:pointer;flex:1;min-width:0}
+  .duan-checkbox{width:27px;height:27px;border:2px solid #b6c2cc;border-radius:3px;position:relative;flex-shrink:0;background:#fff;transition:border-color .15s,background .15s}
+  .duan-checkbox.verified{border-color:#0f6fff;background:#0f6fff}
+  .duan-checkbox.busy{border-color:#0f6fff}
+  .duan-spinner{position:absolute;inset:3px;border:2px solid transparent;border-top-color:#0f6fff;border-radius:50%;animation:duan-spin .7s linear infinite}
+  .duan-check{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px}
   @keyframes duan-spin{to{transform:rotate(360deg)}}
-  .duan-label{font-size:13px;font-weight:500}
-  .duan-label small{display:block;color:#8a7360;font-size:10.5px;font-weight:400;margin-top:2px}
-  .duan-title{display:flex;align-items:center;gap:8px;font-size:12px;color:#8a7360;margin-bottom:10px}
-  .duan-title b{color:#d4af37;font-family:'Noto Serif SC',serif;font-size:15px}
-  .duan-track{position:relative;height:52px;border-radius:10px;overflow:hidden;border:1px solid #232323;
-    background-color:#000;
-    background-image:
-      radial-gradient(circle at 12% 30%, rgba(212,175,55,.14) 0 2px, transparent 3px),
-      radial-gradient(circle at 34% 68%, rgba(212,175,55,.14) 0 2px, transparent 3px),
-      radial-gradient(circle at 58% 22%, rgba(212,175,55,.14) 0 2px, transparent 3px),
-      radial-gradient(circle at 78% 60%, rgba(212,175,55,.14) 0 2px, transparent 3px),
-      radial-gradient(circle at 94% 32%, rgba(212,175,55,.14) 0 2px, transparent 3px);
-  }
-  .duan-slot{position:absolute;top:8px;width:36px;height:36px;border-radius:50%;border:2px dashed #d4af37;opacity:.65;box-sizing:border-box}
-  .duan-piece{position:absolute;top:8px;left:6px;width:36px;height:36px;border-radius:50%;cursor:grab;touch-action:none;background:#3a3a3a;box-shadow:inset 0 0 0 2px rgba(0,0,0,.25);transition:background .2s,box-shadow .2s}
+  .duan-label{font-size:14px;color:#4a4a4a;line-height:1.3}
+  .duan-label small{display:block;color:#9aa5b1;font-size:10.5px;font-weight:400;margin-top:2px}
+  .duan-hc-divider{width:1px;align-self:stretch;background:#e3e8ec;margin:10px 12px}
+  .duan-hc-brand{display:flex;flex-direction:column;align-items:center;justify-content:center;flex-shrink:0;padding:2px 0}
+  .duan-hc-logo{font-size:17px;color:#2b2b2b;font-weight:700;line-height:1}
+  .duan-hc-name{font-size:9.5px;color:#7a7a7a;margin-top:3px;letter-spacing:.2px}
+  .duan-hc-links{font-size:7.5px;color:#b3b3b3;margin-top:4px;text-align:center;line-height:1.3}
+  .duan-title{display:flex;align-items:center;gap:8px;font-size:12px;color:#6f6f6f;margin:12px 12px 10px}
+  .duan-title b{color:#0f6fff;font-weight:700}
+  .duan-puzzle-body{padding:0 12px 12px}
+  .duan-track{position:relative;height:48px;border-radius:6px;overflow:hidden;border:1px solid #e3e8ec;background:#f4f6f8}
+  .duan-slot{position:absolute;top:6px;width:36px;height:36px;border-radius:50%;border:2px dashed #0f6fff;opacity:.45;box-sizing:border-box}
+  .duan-piece{position:absolute;top:6px;left:6px;width:36px;height:36px;border-radius:50%;cursor:grab;touch-action:none;background:#c3ccd4;box-shadow:inset 0 0 0 2px rgba(0,0,0,.06);transition:background .2s,box-shadow .2s}
   .duan-piece:active{cursor:grabbing}
-  .duan-piece.solved{background:radial-gradient(circle at 35% 30%,#e8544a,#b91c1c 70%);box-shadow:0 0 0 3px rgba(185,28,28,.3),inset 0 0 8px rgba(0,0,0,.25)}
-  .duan-msg{margin-top:8px;font-size:11px;color:#8a7360;min-height:14px}
-  .duan-msg.err{color:#e8817a}
-  .duan-msg.ok{color:#d4af37}
+  .duan-piece.solved{background:#0f6fff;box-shadow:0 0 0 3px rgba(15,111,255,.2)}
+  .duan-msg{margin:8px 12px 0;font-size:11px;color:#9aa5b1;min-height:14px}
+  .duan-msg.err{color:#c0392b}
+  .duan-msg.ok{color:#0f6fff;font-weight:600}
   `;
 
   function injectStyle() {
@@ -85,14 +85,22 @@
     function renderCheckbox() {
       container.classList.remove('locked');
       container.innerHTML = `
-        <div class="duan-row" id="duanRow">
-          <div class="duan-checkbox" id="duanCheckbox">
-            <div class="duan-spinner" style="display:none"></div>
-            <div class="duan-check" style="display:none">&#10003;</div>
+        <div class="duan-hc">
+          <div class="duan-row" id="duanRow">
+            <div class="duan-checkbox" id="duanCheckbox">
+              <div class="duan-spinner" style="display:none"></div>
+              <div class="duan-check" style="display:none">&#10003;</div>
+            </div>
+            <div class="duan-label">No soy un robot</div>
           </div>
-          <div class="duan-label">No soy un robot<small>Certificado por Duan 段</small></div>
+          <div class="duan-hc-divider"></div>
+          <div class="duan-hc-brand">
+            <div class="duan-hc-logo">段</div>
+            <div class="duan-hc-name">Duan</div>
+            <div class="duan-hc-links">Privacidad<br>Términos</div>
+          </div>
         </div>
-        <div class="duan-msg"></div>
+        <div class="duan-msg" style="margin-top:0;padding:0 12px 12px"></div>
       `;
       const row = container.querySelector('#duanRow');
       const checkbox = container.querySelector('#duanCheckbox');
@@ -180,9 +188,11 @@
     function loadPuzzle() {
       container.innerHTML = `
         <div class="duan-title"><b>段</b> Verificación Duan</div>
-        <div class="duan-track">
-          <div class="duan-slot"></div>
-          <div class="duan-piece"></div>
+        <div class="duan-puzzle-body">
+          <div class="duan-track">
+            <div class="duan-slot"></div>
+            <div class="duan-piece"></div>
+          </div>
         </div>
         <div class="duan-msg">cargando desafío...</div>
       `;
