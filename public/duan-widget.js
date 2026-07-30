@@ -3,35 +3,263 @@
   const API_BASE = new URL(scriptEl.src).origin;
 
   const STYLE = `
-  .duan-box{font-family:Arial,Helvetica,sans-serif;background:#fff;border:1px solid #d5dee5;border-radius:4px;padding:0;width:100%;max-width:302px;color:#1f2937;box-sizing:border-box;box-shadow:0 0 1px rgba(0,0,0,.08)}
-  .duan-box.locked{opacity:.55;pointer-events:none}
-  .duan-hc{display:flex;align-items:center;padding:13px 12px}
-  .duan-hc-left{display:flex;align-items:center;gap:11px;flex:1;min-width:0}
-  .duan-row{display:flex;align-items:center;gap:11px;cursor:pointer;flex:1;min-width:0}
-  .duan-checkbox{width:27px;height:27px;border:2px solid #b6c2cc;border-radius:3px;position:relative;flex-shrink:0;background:#fff;transition:border-color .15s,background .15s}
-  .duan-checkbox.verified{border-color:#0f6fff;background:#0f6fff}
-  .duan-checkbox.busy{border-color:#0f6fff}
-  .duan-spinner{position:absolute;inset:3px;border:2px solid transparent;border-top-color:#0f6fff;border-radius:50%;animation:duan-spin .7s linear infinite}
-  .duan-check{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px}
-  @keyframes duan-spin{to{transform:rotate(360deg)}}
-  .duan-label{font-size:14px;color:#4a4a4a;line-height:1.3}
-  .duan-label small{display:block;color:#9aa5b1;font-size:10.5px;font-weight:400;margin-top:2px}
-  .duan-hc-divider{width:1px;align-self:stretch;background:#e3e8ec;margin:10px 12px}
-  .duan-hc-brand{display:flex;flex-direction:column;align-items:center;justify-content:center;flex-shrink:0;padding:2px 0}
-  .duan-hc-logo{font-size:17px;color:#2b2b2b;font-weight:700;line-height:1}
-  .duan-hc-name{font-size:9.5px;color:#7a7a7a;margin-top:3px;letter-spacing:.2px}
-  .duan-hc-links{font-size:7.5px;color:#b3b3b3;margin-top:4px;text-align:center;line-height:1.3}
-  .duan-title{display:flex;align-items:center;gap:8px;font-size:12px;color:#6f6f6f;margin:12px 12px 10px}
-  .duan-title b{color:#0f6fff;font-weight:700}
-  .duan-puzzle-body{padding:0 12px 12px}
-  .duan-track{position:relative;height:48px;border-radius:6px;overflow:hidden;border:1px solid #e3e8ec;background:#f4f6f8}
-  .duan-slot{position:absolute;top:6px;width:36px;height:36px;border-radius:50%;border:2px dashed #0f6fff;opacity:.45;box-sizing:border-box}
-  .duan-piece{position:absolute;top:6px;left:6px;width:36px;height:36px;border-radius:50%;cursor:grab;touch-action:none;background:#c3ccd4;box-shadow:inset 0 0 0 2px rgba(0,0,0,.06);transition:background .2s,box-shadow .2s}
-  .duan-piece:active{cursor:grabbing}
-  .duan-piece.solved{background:#0f6fff;box-shadow:0 0 0 3px rgba(15,111,255,.2)}
-  .duan-msg{margin:8px 12px 0;font-size:11px;color:#9aa5b1;min-height:14px}
-  .duan-msg.err{color:#c0392b}
-  .duan-msg.ok{color:#0f6fff;font-weight:600}
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Serif+SC:wght@700&display=swap');
+
+  .duan-box {
+    font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Helvetica Neue', Arial, sans-serif;
+    background: #ffffff;
+    border: 1px solid #e5e5ea;
+    border-radius: 16px;
+    padding: 0;
+    width: 100%;
+    max-width: 302px;
+    color: #000000;
+    box-sizing: border-box;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.08);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    transition: all 0.2s ease;
+  }
+
+  .duan-box.locked {
+    opacity: 0.55;
+    pointer-events: none;
+  }
+
+  /* Header Container */
+  .duan-hc {
+    display: flex;
+    align-items: center;
+    padding: 14px 16px;
+    gap: 14px;
+  }
+
+  .duan-hc-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .duan-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    flex: 1;
+    min-width: 0;
+    transition: opacity 0.15s ease;
+  }
+
+  .duan-row:active {
+    opacity: 0.6;
+  }
+
+  /* Checkbox - iOS style */
+  .duan-checkbox {
+    width: 28px;
+    height: 28px;
+    border: 2px solid #c6c6c8;
+    border-radius: 8px;
+    position: relative;
+    flex-shrink: 0;
+    background: #ffffff;
+    transition: all 0.2s cubic-bezier(0.25, 0.1, 0.25, 1);
+  }
+
+  .duan-checkbox.verified {
+    border-color: #007aff;
+    background: #007aff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 122, 255, 0.3);
+  }
+
+  .duan-checkbox.busy {
+    border-color: #007aff;
+    background: #ffffff;
+  }
+
+  .duan-spinner {
+    position: absolute;
+    inset: 3px;
+    border: 2.5px solid transparent;
+    border-top-color: #007aff;
+    border-radius: 50%;
+    animation: duan-spin 0.7s linear infinite;
+  }
+
+  .duan-check {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    font-size: 15px;
+    font-weight: 600;
+  }
+
+  @keyframes duan-spin {
+    to { transform: rotate(360deg); }
+  }
+
+  /* Label */
+  .duan-label {
+    font-size: 15px;
+    color: #000000;
+    font-weight: 500;
+    line-height: 1.3;
+    letter-spacing: -0.2px;
+  }
+
+  .duan-label small {
+    display: block;
+    color: #8e8e93;
+    font-size: 11px;
+    font-weight: 400;
+    margin-top: 3px;
+    letter-spacing: 0;
+  }
+
+  /* Divider */
+  .duan-hc-divider {
+    width: 1px;
+    align-self: stretch;
+    background: #e5e5ea;
+    margin: 12px 4px;
+  }
+
+  /* Brand Area - Duan with Chinese character */
+  .duan-hc-brand {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    padding: 2px 0;
+    gap: 2px;
+  }
+
+  .duan-hc-logo {
+    font-family: 'Noto Serif SC', 'Songti SC', 'STSong', serif;
+    font-size: 22px;
+    color: #000000;
+    font-weight: 700;
+    line-height: 1;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+  }
+
+  .duan-hc-name {
+    font-size: 10px;
+    color: #8e8e93;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+
+  .duan-hc-links {
+    font-size: 8px;
+    color: #aeaeb2;
+    margin-top: 4px;
+    text-align: center;
+    line-height: 1.3;
+  }
+
+  /* Title for puzzle */
+  .duan-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: #8e8e93;
+    margin: 14px 16px 12px;
+    font-weight: 500;
+  }
+
+  .duan-title b {
+    font-family: 'Noto Serif SC', 'Songti SC', serif;
+    color: #007aff;
+    font-weight: 700;
+    font-size: 18px;
+  }
+
+  /* Puzzle Body */
+  .duan-puzzle-body {
+    padding: 0 16px 16px;
+  }
+
+  .duan-track {
+    position: relative;
+    height: 50px;
+    border-radius: 25px;
+    overflow: hidden;
+    border: 1.5px solid #e5e5ea;
+    background: #f9f9fb;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.04);
+  }
+
+  .duan-slot {
+    position: absolute;
+    top: 8px;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    border: 2.5px dashed #007aff;
+    opacity: 0.5;
+    box-sizing: border-box;
+    transition: left 0.3s ease;
+  }
+
+  .duan-piece {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    cursor: grab;
+    touch-action: none;
+    background: #d1d1d6;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12), inset 0 0 0 2px rgba(255, 255, 255, 0.6);
+    transition: background 0.2s ease, box-shadow 0.2s ease, transform 0.1s ease;
+  }
+
+  .duan-piece:active {
+    cursor: grabbing;
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15), inset 0 0 0 2px rgba(255, 255, 255, 0.6);
+  }
+
+  .duan-piece.solved {
+    background: #007aff;
+    box-shadow: 0 0 0 4px rgba(0, 122, 255, 0.2), inset 0 0 0 2px rgba(255, 255, 255, 0.3);
+    cursor: default;
+  }
+
+  /* Messages */
+  .duan-msg {
+    margin: 12px 16px 0;
+    font-size: 12px;
+    color: #8e8e93;
+    min-height: 16px;
+    font-weight: 400;
+    letter-spacing: -0.1px;
+  }
+
+  .duan-msg.err {
+    color: #ff3b30;
+  }
+
+  .duan-msg.ok {
+    color: #007aff;
+    font-weight: 600;
+  }
+
+  /* Smooth transitions for message changes */
+  .duan-msg, .duan-label, .duan-checkbox {
+    transition: color 0.15s ease, background 0.2s ease, border-color 0.2s ease;
+  }
   `;
 
   function injectStyle() {
@@ -89,7 +317,7 @@
           <div class="duan-row" id="duanRow">
             <div class="duan-checkbox" id="duanCheckbox">
               <div class="duan-spinner" style="display:none"></div>
-              <div class="duan-check" style="display:none">&#10003;</div>
+              <div class="duan-check" style="display:none">✓</div>
             </div>
             <div class="duan-label">No soy un robot</div>
           </div>
@@ -100,7 +328,7 @@
             <div class="duan-hc-links">Privacidad<br>Términos</div>
           </div>
         </div>
-        <div class="duan-msg" style="margin-top:0;padding:0 12px 12px"></div>
+        <div class="duan-msg" style="margin-top:0;padding:0 16px 16px"></div>
       `;
       const row = container.querySelector('#duanRow');
       const checkbox = container.querySelector('#duanCheckbox');
@@ -202,7 +430,7 @@
       const msgEl = container.querySelector('.duan-msg');
 
       let challenge = null;
-      let dragging = false, startX = 0, originLeft = 6, movements = [], trusted = true;
+      let dragging = false, startX = 0, originLeft = 8, movements = [], trusted = true;
 
       async function fetchChallenge() {
         container.classList.add('locked');
@@ -214,7 +442,7 @@
           const maxLeft = trackWidth - 42;
           const targetLeft = Math.min(challenge.target, maxLeft);
           slot.style.left = targetLeft + 'px';
-          piece.style.left = '6px';
+          piece.style.left = '8px';
           piece.classList.remove('solved');
           movements = [];
           msgEl.textContent = 'arrastrá el círculo hasta encajarlo';
@@ -235,7 +463,7 @@
         dragging = true;
         trusted = e.isTrusted !== false;
         startX = e.touches ? e.touches[0].clientX : e.clientX;
-        originLeft = parseFloat(piece.style.left) || 6;
+        originLeft = parseFloat(piece.style.left) || 8;
         movements = [{ x: originLeft, t: Date.now() }];
         e.preventDefault();
       }
