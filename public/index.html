@@ -24,7 +24,7 @@ body{
   color:var(--text);
 }
 
-/* HEADER estilo iOS oscuro */
+/* HEADER */
 .header{
   padding:16px;
   text-align:center;
@@ -37,7 +37,7 @@ body{
   top:0;
 }
 
-/* CONTENIDO FULL */
+/* CONTENIDO */
 .container{
   padding:16px;
   max-width:600px;
@@ -56,7 +56,7 @@ h1{
   margin-bottom:20px;
 }
 
-/* CARDS estilo iOS dark */
+/* CARDS */
 .card{
   background:var(--card);
   border-radius:16px;
@@ -65,7 +65,7 @@ h1{
   border:1px solid var(--border);
 }
 
-/* BOTÓN iOS */
+/* BOTÓN */
 .btn{
   width:100%;
   padding:13px;
@@ -114,12 +114,10 @@ pre{
   color:#d1d5db;
 }
 </style></head><body><div class="header">Duan Verify</div><div class="container"><h1>Verificación</h1>
-<p class="lead">Protección anti bots basada en comportamiento.</p><div class="card">
-  <div class="duan-widget-container" data-sitekey="demo"></div>
-</div><div class="card">
+<p class="lead">Protección anti bots basada en comportamiento.</p><!-- SOLO CREDENCIALES --><div class="card">
   <button class="btn" id="genBtn">Generar claves</button>
   <div id="keysOut"></div>
-</div><div class="card">  <div class="step">
+</div><!-- TUTORIAL --><div class="card">  <div class="step">
     <b>1. Agrega el widget</b>
 <pre>&lt;div class="duan-widget-container" data-sitekey="TU_SITE_KEY"&gt;&lt;/div&gt;
 &lt;script src="https://tu-app.onrender.com/duan-widget.js"&gt;&lt;/script&gt;</pre>
@@ -137,7 +135,7 @@ pre{
   </div>  <div class="step">
     <b>3. Bloquea bots</b>
 <pre>if (!success) return res.status(403).json({ error: "verificación fallida" });</pre>
-  </div></div></div><script src="/duan-widget.js"></script><script>
+  </div></div></div><script>
 document.getElementById('genBtn').onclick = async () => {
   const btn = document.getElementById('genBtn');
   btn.textContent = "Generando...";
