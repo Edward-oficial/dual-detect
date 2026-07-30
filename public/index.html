@@ -229,17 +229,6 @@ pre{
   <div class="card">
     <button class="btn" id="genBtn">Generar claves</button>
     <div id="keysOut"></div>
-    
-    <div class="stats">
-      <div class="stat">
-        <div class="stat-num" id="totalChecks">--</div>
-        <div class="stat-label">Verificaciones</div>
-      </div>
-      <div class="stat">
-        <div class="stat-num" id="blockedBots">--</div>
-        <div class="stat-label">Bots bloqueados</div>
-      </div>
-    </div>
   </div>
 
   <div class="card">
@@ -280,20 +269,6 @@ const { success } = await r.json();</pre>
 </div>
 
 <script>
-async function cargarStats() {
-  try {
-    const r = await fetch('/api/stats');
-    const data = await r.json();
-    document.getElementById('totalChecks').textContent = data.total_checks.toLocaleString();
-    document.getElementById('blockedBots').textContent = data.blocked_bots.toLocaleString();
-  } catch(e) {
-    document.getElementById('totalChecks').textContent = '0';
-    document.getElementById('blockedBots').textContent = '0';
-  }
-}
-
-cargarStats();
-
 document.getElementById('genBtn').onclick = async () => {
   const btn = document.getElementById('genBtn');
   btn.textContent = "Generando...";
@@ -313,9 +288,6 @@ document.getElementById('genBtn').onclick = async () => {
         <span>${d.secretKey}</span>
       </div>
     `;
-    
-    cargarStats();
-    
   } catch(e) {
     document.getElementById('keysOut').innerHTML = `
       <div class="keys-row" style="color:#ff453a;">
