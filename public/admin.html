@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Duan — Panel</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@600;700&family=Inter:wght@400;500;600&display=swap');
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #050505; color: #c9beb0; font-family: 'Inter', sans-serif; padding: 32px 18px 60px; }
+  .wrap { max-width: 720px; margin: 0 auto; }
+  h1 { font-family: 'Noto Serif SC', serif; color: #f2e6d2; font-size: 22px; margin: 0 0 4px; }
+  h1 span { color: #d4af37; }
+  p.sub { color: #8a7360; font-size: 12.5px; margin: 0 0 24px; }
+  .gate { background: #0e0e0e; border: 1px solid #232323; border-radius: 8px; padding: 20px; }
+  .gate input {
+    width: 100%; background: #000; border: 1px solid #232323; color: #f2e6d2;
+    padding: 10px; border-radius: 6px; font-size: 13px; margin-bottom: 10px;
+  }
+  .btn {
+    background: linear-gradient(135deg, #d4341f, #8f1c15); color: #f2e6d2;
+    border: 1px solid #e8544a; padding: 9px 16px; border-radius: 6px;
+    font-size: 13px; font-weight: 600; cursor: pointer;
+  }
+  table { width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 12.5px; }
+  th, td { text-align: left; padding: 10px 8px; border-bottom: 1px solid #232323; }
+  th { color: #d4af37; font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: .5px; }
+  td { color: #c9beb0; word-break: break-all; }
+  .badge { padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; }
+  .badge.live { background: rgba(212,175,55,.15); color: #d4af37; }
+  .badge.unused { background: rgba(255,255,255,.05); color: #6b6b6b; }
+  .empty { color: #6b6b6b; font-size: 13px; padding: 20px 0; text-align: center; }
+  .err { color: #e8817a; font-size: 12.5px; margin-top: 8px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>段 Panel de <span>Duan</span></h1>
+  <p class="sub">Site keys reales en uso — no solo las generadas</p>
+
+  <div class="gate" id="gate">
+    <input type="password" id="adminKey" placeholder="Admin key">
+    <button class="btn" id="enterBtn">Entrar</button>
+    <div class="err" id="errMsg" style="display:none">Key incorrecta</div>
+  </div>
+
+  <div id="content" style="display:none">
+    <table>
+      <thead>
+        <tr><th>Site key</th><th>Estado</th><th>Usos</th><th>Verificados</th><th>Último uso</th><th>Creada</th></tr>
+      </thead>
+      <tbody id="rows"></tbody>
+    </table>
+    <div class="empty" id="emptyMsg" style="display:none">No hay site keys generadas todavía.</div>
+  </div>
+</div>
+
+<script>
+  function fmt(ts) {
+    if (!ts) return '—';
+    return new Date(ts).toLocaleString();
+  }
+
+  async function load(key) {
+    const r = await fetch(`/api/admin/keys?key=${encodeURIComponent(key)}`);
+    if (!r.ok) {
+      document.getElementById('errMsg').style.display = 'block';
+      return;
+    }
+    const data = await r.json();
+    document.getElementById('gate').style.display = 'none';
+    document.getElementById('content').style.display = 'block';
+
+    const rows = document.getElementById('rows');
+    rows.innerHTML = '';
+
+    if (!data.keys.length) {
+      document.getElementById('emptyMsg').style.display = 'block';
+      return;
+    }
+
+    data.keys.forEach(k => {
+      const tr = document.createElement('tr');
+      const badge = k.uses > 0
+        ? '<span class="badge live">en uso</span>'
+        : '<span class="badge unused">sin usar</span>';
+      tr.innerHTML = `
+        <td>${k.siteKey}</td>
+        <td>${badge}</td>
+        <td>${k.uses}</td>
+        <td>${k.verified}</td>
+        <td>${fmt(k.lastUsedAt)}</td>
+        <td>${fmt(k.createdAt)}</td>
+      `;
+      rows.appendChild(tr);
+    });
+  }
+
+  document.getElementById('enterBtn').addEventListener('click', () => {
+    const key = document.getElementById('adminKey').value.trim();
+    document.getElementById('errMsg').style.display = 'none';
+    if (key) load(key);
+  });
+</script>
+</body>
+</html>
