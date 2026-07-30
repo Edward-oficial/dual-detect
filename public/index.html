@@ -3,165 +3,136 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Duan — Verificación de humano</title>
+<title>Duan — Panel de verificación</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@600;700&family=Inter:wght@400;500;600&display=swap');
+  :root {
+    --navy: #14304d;
+    --navy-2: #1d4e89;
+    --bg: #eef1f5;
+    --panel: #ffffff;
+    --border: #d7dee6;
+    --text: #1f2937;
+    --muted: #6b7280;
+  }
   * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text); font-family: 'Inter', 'Segoe UI', Arial, sans-serif; }
 
-  body {
-    margin: 0;
-    background: #120c0c;
-    background-image:
-      repeating-linear-gradient(135deg, rgba(212,175,55,0.025) 0 2px, transparent 2px 26px),
-      radial-gradient(circle at 12% 6%, rgba(185,28,28,0.12), transparent 40%),
-      radial-gradient(circle at 90% 95%, rgba(212,175,55,0.07), transparent 40%);
-    color: #d8c9b8;
-    font-family: 'Inter', sans-serif;
-    padding: 40px 18px 80px;
+  header {
+    background: var(--navy);
+    color: #fff;
+    padding: 16px 24px;
+    display: flex; align-items: center; justify-content: space-between;
+    box-shadow: 0 1px 3px rgba(0,0,0,.15);
   }
+  header .wordmark { font-size: 16px; font-weight: 700; letter-spacing: .3px; }
+  header .tag { font-size: 12px; color: #c3d3e6; }
 
-  .wrap { max-width: 600px; margin: 0 auto; }
+  .wrap { max-width: 860px; margin: 0 auto; padding: 32px 20px 60px; }
 
-  /* --- Letrero / cartel de encabezado --- */
-  .plaque {
-    position: relative;
-    text-align: center;
-    padding: 22px 20px 18px;
-    margin-bottom: 8px;
-    background: linear-gradient(180deg, #7a1712, #5c100c);
-    border-top: 3px solid #d4af37;
-    border-bottom: 3px solid #d4af37;
-    box-shadow: 0 0 0 1px #2a0a08 inset;
-  }
-  .plaque::before, .plaque::after {
-    content: '';
-    position: absolute;
-    top: 50%; transform: translateY(-50%);
-    width: 8px; height: 8px;
-    border-radius: 50%;
-    background: #d4af37;
-  }
-  .plaque::before { left: 14px; }
-  .plaque::after { right: 14px; }
-  .plaque h1 {
-    font-family: 'Noto Serif SC', serif;
-    color: #f2e6d2;
-    font-size: 30px;
-    margin: 0;
-    letter-spacing: 3px;
-  }
-  .plaque h1 span { color: #d4af37; }
-  .plaque .sub {
-    font-size: 11px;
-    color: #d9a98f;
-    letter-spacing: 2px;
-    margin-top: 4px;
-    text-transform: uppercase;
-  }
+  h1 { font-size: 20px; font-weight: 700; margin: 0 0 6px; color: var(--text); }
+  p.lead { color: var(--muted); font-size: 13.5px; margin: 0 0 28px; line-height: 1.6; max-width: 560px; }
 
-  p.lead {
-    color: #a5876a; font-size: 13.5px; line-height: 1.7;
-    text-align: center; margin: 18px auto 36px; max-width: 460px;
-  }
-
-  /* --- Tarjetas tipo certificado, con esquinas y sello --- */
   .card {
-    position: relative;
-    background: #1c1414;
-    border: 1px solid #3d1f1f;
-    box-shadow: 0 0 0 1px rgba(212,175,55,0.15) inset;
-    border-radius: 4px;
-    padding: 26px 22px 22px;
-    margin-bottom: 30px;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    box-shadow: 0 1px 2px rgba(0,0,0,.04);
+    margin-bottom: 24px;
+    overflow: hidden;
   }
-  .card::before, .card::after {
-    content: '';
-    position: absolute;
-    width: 16px; height: 16px;
-    border-color: #d4af37;
-    border-style: solid;
+  .card-header {
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--border);
+    font-size: 13.5px; font-weight: 600; color: var(--text);
+    background: #f8f9fb;
+    display: flex; align-items: center; justify-content: space-between;
   }
-  .card::before { top: -1px; left: -1px; border-width: 2px 0 0 2px; }
-  .card::after { bottom: -1px; right: -1px; border-width: 0 2px 2px 0; }
-
-  .seal {
-    position: absolute;
-    top: -14px; right: 18px;
-    width: 36px; height: 36px;
-    background: radial-gradient(circle at 35% 30%, #d4341f, #8f1c15 75%);
-    color: #f2d9a8;
-    font-family: 'Noto Serif SC', serif;
-    font-size: 15px; font-weight: 700;
-    display: flex; align-items: center; justify-content: center;
-    border-radius: 3px 9px 5px 8px;
-    transform: rotate(-7deg);
-    box-shadow: 0 3px 6px rgba(0,0,0,.4);
-  }
-
-  h2 {
-    font-family: 'Noto Serif SC', serif;
-    font-size: 15px; color: #f2e6d2; font-weight: 600;
-    margin: 0 0 16px; padding-bottom: 10px;
-    border-bottom: 1px dashed #3d1f1f;
-  }
-
-  code, pre { font-family: 'SFMono-Regular', Consolas, monospace; font-size: 12.5px; }
-  pre {
-    background: #0f0a0a; border: 1px solid #3d1f1f; border-radius: 6px;
-    padding: 14px; overflow-x: auto; color: #c9ad8f; line-height: 1.6;
-  }
+  .card-body { padding: 20px; }
 
   .btn {
-    background: linear-gradient(135deg, #d4341f, #8f1c15);
-    color: #f2e6d2; border: 1px solid #e8544a; padding: 10px 18px;
-    border-radius: 4px; font-size: 13px; font-weight: 600; cursor: pointer;
+    background: var(--navy-2); color: #fff; border: none;
+    padding: 9px 16px; border-radius: 5px; font-size: 13px; font-weight: 600;
+    cursor: pointer; font-family: 'Inter', sans-serif;
   }
-  .btn:hover { filter: brightness(1.1); }
+  .btn:hover { background: var(--navy); }
 
-  .keys { margin-top: 16px; font-size: 12px; word-break: break-all; }
-  .keys div { margin-bottom: 6px; }
-  .keys b { color: #d4af37; }
-  .warn { color: #d4af37; font-size: 11.5px; margin-top: 8px; }
+  .keys { margin-top: 14px; font-size: 12.5px; }
+  .keys-row { display: flex; padding: 8px 0; border-bottom: 1px solid var(--border); }
+  .keys-row:last-child { border-bottom: none; }
+  .keys-row b { width: 110px; flex-shrink: 0; color: var(--muted); font-weight: 600; }
+  .keys-row span { font-family: 'SFMono-Regular', Consolas, monospace; word-break: break-all; color: var(--text); }
+  .warn { color: #92400e; font-size: 12px; margin-top: 10px; background: #fef3e2; border: 1px solid #fcd9a8; padding: 8px 12px; border-radius: 4px; }
 
-  .note { font-size: 12px; color: #a5876a; margin-top: 12px; line-height: 1.6; }
+  table { width: 100%; border-collapse: collapse; }
+  th, td { text-align: left; padding: 12px 20px; font-size: 13px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  th { background: #f8f9fb; color: var(--muted); font-weight: 600; font-size: 11.5px; text-transform: uppercase; letter-spacing: .4px; }
+  td.step-n { width: 42px; color: var(--navy-2); font-weight: 700; }
+  tr:last-child td { border-bottom: none; }
+
+  code { font-family: 'SFMono-Regular', Consolas, monospace; font-size: 12px; background: #f1f3f6; padding: 1px 5px; border-radius: 3px; }
+  pre {
+    font-family: 'SFMono-Regular', Consolas, monospace; font-size: 12px;
+    background: #f8f9fb; border: 1px solid var(--border); border-radius: 5px;
+    padding: 12px; overflow-x: auto; color: #2c3e50; line-height: 1.6; margin: 8px 0 0;
+  }
+  .note { font-size: 12px; color: var(--muted); margin-top: 8px; line-height: 1.6; }
+
+  footer {
+    text-align: center; color: var(--muted); font-size: 11.5px;
+    padding: 20px 0 0; border-top: 1px solid var(--border); margin-top: 8px;
+  }
 </style>
 </head>
 <body>
+
+<header>
+  <div class="wordmark">Duan</div>
+  <div class="tag">Sistema de verificación anti-bots</div>
+</header>
+
 <div class="wrap">
-
-  <div class="plaque">
-    <h1>段 <span>DUAN</span></h1>
-    <div class="sub">验证系统 · verificación anti-bots</div>
-  </div>
-
-  <p class="lead">Se arrastra un círculo hasta encajarlo, y de fondo se analiza movimiento, tiempos, IP y conexión para distinguir humanos de bots.</p>
+  <h1>Panel de verificación</h1>
+  <p class="lead">Widget de verificación humana por comportamiento: análisis de movimiento, tiempos, IP y conexión antes de dejar pasar un envío.</p>
 
   <div class="card">
-    <h2>Demo en vivo</h2>
-    <div class="duan-widget-container" data-sitekey="duan_demo_sitekey_0001"></div>
+    <div class="card-header">Vista previa</div>
+    <div class="card-body">
+      <div class="duan-widget-container" data-sitekey="duan_demo_sitekey_0001"></div>
+    </div>
   </div>
 
   <div class="card">
-    <div class="seal">壹</div>
-    <h2>Conseguí tu site key</h2>
-    <button class="btn" id="genBtn">Generar site key + secret key</button>
-    <div class="keys" id="keysOut"></div>
-    <p class="warn" id="warnMsg" style="display:none">Guardá la secret key ahora — no se vuelve a mostrar.</p>
+    <div class="card-header">Credenciales</div>
+    <div class="card-body">
+      <button class="btn" id="genBtn">Generar site key + secret key</button>
+      <div class="keys" id="keysOut"></div>
+      <div class="warn" id="warnMsg" style="display:none">Guardá la secret key ahora, no se vuelve a mostrar.</div>
+    </div>
   </div>
 
   <div class="card">
-    <div class="seal">贰</div>
-    <h2>Poné el widget en tu página</h2>
-    <pre>&lt;div class="duan-widget-container" data-sitekey="TU_SITE_KEY"&gt;&lt;/div&gt;
+    <div class="card-header">Guía de integración</div>
+    <table>
+      <thead>
+        <tr><th>Paso</th><th>Instrucción</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="step-n">1</td>
+          <td>
+            Insertá el widget en la página que querés proteger, usando la site key generada arriba.
+            <pre>&lt;div class="duan-widget-container" data-sitekey="TU_SITE_KEY"&gt;&lt;/div&gt;
 &lt;script src="<span id="originSpan">https://tu-app.onrender.com</span>/duan-widget.js" async defer&gt;&lt;/script&gt;</pre>
-    <p class="note">Al verificarse, el widget crea un input oculto <code>duan-response</code> dentro del <code>&lt;form&gt;</code> más cercano, con el token. Se envía junto con el resto del formulario.</p>
-  </div>
-
-  <div class="card">
-    <div class="seal">叁</div>
-    <h2>Validá el token en tu backend</h2>
-    <pre>// en tu servidor, al recibir el formulario
-const r = await fetch("<span class="originJs">https://tu-app.onrender.com</span>/api/duan/siteverify", {
+            <p class="note">Al verificarse, se crea un input oculto <code>duan-response</code> dentro del <code>&lt;form&gt;</code> más cercano.</p>
+          </td>
+        </tr>
+        <tr>
+          <td class="step-n">2</td>
+          <td>
+            En tu backend, al recibir el formulario, validá el token contra Duan usando tu secret key.
+            <pre>const r = await fetch("<span class="originJs">https://tu-app.onrender.com</span>/api/duan/siteverify", {
   method: "POST",
   headers: { "Content-Type": "application/json" },
   body: JSON.stringify({
@@ -169,16 +140,28 @@ const r = await fetch("<span class="originJs">https://tu-app.onrender.com</span>
     secret: "TU_SECRET_KEY"
   })
 });
-const { success } = await r.json();
-if (!success) return res.status(403).json({ error: "verificación fallida" });</pre>
+const { success } = await r.json();</pre>
+          </td>
+        </tr>
+        <tr>
+          <td class="step-n">3</td>
+          <td>
+            Si <code>success</code> es <code>false</code>, rechazá el envío antes de procesar el resto de la lógica.
+            <pre>if (!success) return res.status(403).json({ error: "verificación fallida" });</pre>
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 
+  <footer id="originFooter"></footer>
 </div>
 
 <script src="/duan-widget.js"></script>
 <script>
   document.getElementById('originSpan').textContent = window.location.origin;
   document.querySelectorAll('.originJs').forEach(el => el.textContent = window.location.origin);
+  document.getElementById('originFooter').textContent = 'Duan · ' + window.location.host;
 
   document.getElementById('genBtn').addEventListener('click', async () => {
     const btn = document.getElementById('genBtn');
@@ -188,8 +171,8 @@ if (!success) return res.status(403).json({ error: "verificación fallida" });</
       const r = await fetch('/api/keys', { method: 'POST' });
       const data = await r.json();
       document.getElementById('keysOut').innerHTML = `
-        <div><b>Site key:</b> ${data.siteKey}</div>
-        <div><b>Secret key:</b> ${data.secretKey}</div>
+        <div class="keys-row"><b>Site key</b><span>${data.siteKey}</span></div>
+        <div class="keys-row"><b>Secret key</b><span>${data.secretKey}</span></div>
       `;
       document.getElementById('warnMsg').style.display = 'block';
     } catch {
