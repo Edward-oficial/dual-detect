@@ -4,114 +4,95 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Duan Panel</title><style>
 :root{
-  --bg:#f5f5f7;
+  --bg:#f2f2f7;
   --card:#ffffff;
-  --text:#1d1d1f;
-  --muted:#6e6e73;
+  --text:#1c1c1e;
+  --muted:#8e8e93;
   --border:#e5e5ea;
-  --accent:#0071e3;
+  --accent:#007aff;
 }
 
-*{box-sizing:border-box;margin:0;padding:0;}
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
 
 body{
-  font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text",sans-serif;
+  font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Helvetica Neue",sans-serif;
   background:var(--bg);
   color:var(--text);
 }
 
-/* CENTRADO */
-.wrap{
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  padding:20px;
-  gap:30px;
-}
-
-/* iPHONE MOCK */
-.phone{
-  width:340px;
-  border-radius:30px;
-  background:#000;
-  padding:12px;
-  box-shadow:0 20px 60px rgba(0,0,0,.2);
-}
-
-.screen{
-  background:var(--bg);
-  border-radius:22px;
-  overflow:hidden;
-}
-
-/* HEADER */
+/* HEADER estilo iOS */
 .header{
-  padding:14px;
-  font-weight:600;
-  text-align:center;
-  border-bottom:1px solid var(--border);
-}
-
-/* CONTENT */
-.content{
   padding:16px;
+  text-align:center;
+  font-weight:600;
+  font-size:17px;
+  background:rgba(255,255,255,0.8);
+  backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--border);
+  position:sticky;
+  top:0;
 }
 
+/* CONTENIDO */
+.container{
+  padding:16px;
+  max-width:600px;
+  margin:auto;
+}
+
+/* TITULOS */
 h1{
-  font-size:18px;
+  font-size:22px;
   margin-bottom:4px;
 }
 
 .lead{
-  font-size:13px;
+  font-size:14px;
   color:var(--muted);
-  margin-bottom:16px;
+  margin-bottom:20px;
 }
 
-/* CARD */
+/* CARDS estilo iOS */
 .card{
   background:var(--card);
   border-radius:14px;
-  padding:14px;
-  margin-bottom:14px;
+  padding:16px;
+  margin-bottom:16px;
   border:1px solid var(--border);
 }
 
-/* BUTTON */
+/* BOTÓN estilo iOS */
 .btn{
   width:100%;
-  padding:10px;
-  border-radius:10px;
+  padding:12px;
+  border-radius:12px;
   border:none;
   background:var(--accent);
   color:#fff;
+  font-size:15px;
   font-weight:600;
 }
 
 /* KEYS */
 .keys-row{
-  margin-top:10px;
-  font-size:12px;
+  margin-top:12px;
+  font-size:13px;
 }
 
 .keys-row span{
   display:block;
-  word-break:break-all;
   margin-top:4px;
+  word-break:break-all;
   color:var(--muted);
 }
 
 /* TUTORIAL */
-.tutorial{
-  max-width:600px;
-}
-
 .step{
-  background:#fff;
-  padding:14px;
-  border-radius:12px;
-  margin-bottom:10px;
-  border:1px solid var(--border);
+  margin-bottom:14px;
 }
 
 .step b{
@@ -122,31 +103,19 @@ h1{
 pre{
   background:#f2f2f7;
   padding:10px;
-  border-radius:8px;
+  border-radius:10px;
   font-size:12px;
   overflow-x:auto;
   margin-top:6px;
 }
-</style></head><body><div class="wrap"><!-- iPHONE VIEW --><div class="phone">
-  <div class="screen"><div class="header">Duan Verify</div>
-
-<div class="content">
-  <h1>Verificación</h1>
-  <p class="lead">Protección anti bots por comportamiento.</p>
-
-  <div class="card">
-    <div class="duan-widget-container" data-sitekey="demo"></div>
-  </div>
-
-  <div class="card">
-    <button class="btn" id="genBtn">Generar claves</button>
-    <div id="keysOut"></div>
-  </div>
-
-</div>
-
-  </div>
-</div><!-- TUTORIAL --><div class="tutorial">  <h2 style="margin-bottom:10px;">Guía rápida</h2>  <div class="step">
+</style></head><body><div class="header">Duan Verify</div><div class="container"><h1>Verificación</h1>
+<p class="lead">Protección anti bots basada en comportamiento.</p><div class="card">
+  <div class="duan-widget-container" data-sitekey="demo"></div>
+</div><div class="card">
+  <button class="btn" id="genBtn">Generar claves</button>
+  <div id="keysOut"></div>
+</div><div class="card">
+  <div class="step">
     <b>1. Agrega el widget</b>
 <pre>&lt;div class="duan-widget-container" data-sitekey="TU_SITE_KEY"&gt;&lt;/div&gt;
 &lt;script src="https://tu-app.onrender.com/duan-widget.js"&gt;&lt;/script&gt;</pre>
@@ -164,7 +133,8 @@ pre{
   </div>  <div class="step">
     <b>3. Bloquea bots</b>
 <pre>if (!success) return res.status(403).json({ error: "verificación fallida" });</pre>
-  </div></div></div><script src="/duan-widget.js"></script><script>
+  </div>
+</div></div><script src="/duan-widget.js"></script><script>
 document.getElementById('genBtn').onclick = async () => {
   const btn = document.getElementById('genBtn');
   btn.textContent = "Generando...";
