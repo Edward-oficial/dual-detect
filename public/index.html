@@ -1,186 +1,245 @@
-<!DOCTYPE html>
-<html lang="es">
+<!DOCTYPE html><html lang="es">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Duan — Panel de verificación</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --navy: #14304d;
-    --navy-2: #1d4e89;
-    --bg: #eef1f5;
-    --panel: #ffffff;
-    --border: #d7dee6;
-    --text: #1f2937;
-    --muted: #6b7280;
-  }
-  * { box-sizing: border-box; }
-  body { margin: 0; background: var(--bg); color: var(--text); font-family: 'Inter', 'Segoe UI', Arial, sans-serif; }
+<title>Duan — Panel</title><style>
+:root {
+  --bg: #0f172a;
+  --panel: #111827;
+  --soft: #1f2937;
+  --text: #e5e7eb;
+  --muted: #9ca3af;
+  --accent: #3b82f6;
+}
 
-  header {
-    background: var(--navy);
-    color: #fff;
-    padding: 16px 24px;
-    display: flex; align-items: center; justify-content: space-between;
-    box-shadow: 0 1px 3px rgba(0,0,0,.15);
-  }
-  header .wordmark { font-size: 16px; font-weight: 700; letter-spacing: .3px; }
-  header .tag { font-size: 12px; color: #c3d3e6; }
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
 
-  .wrap { max-width: 860px; margin: 0 auto; padding: 32px 20px 60px; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: system-ui, sans-serif;
+}
 
-  h1 { font-size: 20px; font-weight: 700; margin: 0 0 6px; color: var(--text); }
-  p.lead { color: var(--muted); font-size: 13.5px; margin: 0 0 28px; line-height: 1.6; max-width: 560px; }
+/* HEADER */
+header {
+  padding: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 
-  .card {
-    background: var(--panel);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    box-shadow: 0 1px 2px rgba(0,0,0,.04);
-    margin-bottom: 24px;
-    overflow: hidden;
-  }
-  .card-header {
-    padding: 14px 20px;
-    border-bottom: 1px solid var(--border);
-    font-size: 13.5px; font-weight: 600; color: var(--text);
-    background: #f8f9fb;
-    display: flex; align-items: center; justify-content: space-between;
-  }
-  .card-body { padding: 20px; }
+.wordmark {
+  font-weight: 700;
+  font-size: 18px;
+}
 
-  .btn {
-    background: var(--navy-2); color: #fff; border: none;
-    padding: 9px 16px; border-radius: 5px; font-size: 13px; font-weight: 600;
-    cursor: pointer; font-family: 'Inter', sans-serif;
-  }
-  .btn:hover { background: var(--navy); }
+.tag {
+  font-size: 12px;
+  color: var(--muted);
+}
 
-  .keys { margin-top: 14px; font-size: 12.5px; }
-  .keys-row { display: flex; padding: 8px 0; border-bottom: 1px solid var(--border); }
-  .keys-row:last-child { border-bottom: none; }
-  .keys-row b { width: 110px; flex-shrink: 0; color: var(--muted); font-weight: 600; }
-  .keys-row span { font-family: 'SFMono-Regular', Consolas, monospace; word-break: break-all; color: var(--text); }
-  .warn { color: #92400e; font-size: 12px; margin-top: 10px; background: #fef3e2; border: 1px solid #fcd9a8; padding: 8px 12px; border-radius: 4px; }
+/* WRAP */
+.wrap {
+  width: 100%;
+  padding: 16px;
+}
 
-  table { width: 100%; border-collapse: collapse; }
-  th, td { text-align: left; padding: 12px 20px; font-size: 13px; border-bottom: 1px solid var(--border); vertical-align: top; }
-  th { background: #f8f9fb; color: var(--muted); font-weight: 600; font-size: 11.5px; text-transform: uppercase; letter-spacing: .4px; }
-  td.step-n { width: 42px; color: var(--navy-2); font-weight: 700; }
-  tr:last-child td { border-bottom: none; }
+/* TITLES */
+h1 {
+  font-size: 22px;
+  margin-bottom: 6px;
+}
 
-  code { font-family: 'SFMono-Regular', Consolas, monospace; font-size: 12px; background: #f1f3f6; padding: 1px 5px; border-radius: 3px; }
-  pre {
-    font-family: 'SFMono-Regular', Consolas, monospace; font-size: 12px;
-    background: #f8f9fb; border: 1px solid var(--border); border-radius: 5px;
-    padding: 12px; overflow-x: auto; color: #2c3e50; line-height: 1.6; margin: 8px 0 0;
-  }
-  .note { font-size: 12px; color: var(--muted); margin-top: 8px; line-height: 1.6; }
+.lead {
+  font-size: 13px;
+  color: var(--muted);
+  margin-bottom: 20px;
+}
 
-  footer {
-    text-align: center; color: var(--muted); font-size: 11.5px;
-    padding: 20px 0 0; border-top: 1px solid var(--border); margin-top: 8px;
-  }
-</style>
-</head>
-<body>
+/* CARDS */
+.card {
+  background: var(--panel);
+  border-radius: 12px;
+  margin-bottom: 16px;
+  overflow: hidden;
+}
 
-<header>
+.card-header {
+  padding: 14px;
+  font-size: 13px;
+  color: var(--muted);
+  border-bottom: 1px solid #1f2937;
+}
+
+.card-body {
+  padding: 14px;
+}
+
+/* BUTTON */
+.btn {
+  width: 100%;
+  padding: 12px;
+  border-radius: 8px;
+  border: none;
+  background: var(--accent);
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* KEYS */
+.keys-row {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 10px 0;
+  border-bottom: 1px solid #1f2937;
+}
+
+.keys-row b {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.keys-row span {
+  font-size: 12px;
+  word-break: break-all;
+}
+
+/* WARNING */
+.warn {
+  margin-top: 10px;
+  font-size: 12px;
+  padding: 10px;
+  border-radius: 6px;
+  background: #3f1d1d;
+  color: #fca5a5;
+}
+
+/* TABLE MOBILE */
+table {
+  width: 100%;
+}
+
+tr {
+  display: block;
+  margin-bottom: 12px;
+  background: var(--soft);
+  border-radius: 10px;
+  padding: 10px;
+}
+
+td {
+  display: block;
+  font-size: 13px;
+  margin-bottom: 6px;
+}
+
+.step-n {
+  font-weight: 700;
+  color: var(--accent);
+}
+
+/* CODE */
+pre {
+  font-size: 11px;
+  padding: 10px;
+  overflow-x: auto;
+  background: #020617;
+  border-radius: 8px;
+  margin-top: 6px;
+}
+
+code {
+  background: #020617;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+/* FOOTER */
+footer {
+  text-align: center;
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 20px;
+}
+</style></head><body><header>
   <div class="wordmark">Duan</div>
-  <div class="tag">Sistema de verificación anti-bots</div>
-</header>
-
-<div class="wrap">
-  <h1>Panel de verificación</h1>
-  <p class="lead">Widget de verificación humana por comportamiento: análisis de movimiento, tiempos, IP y conexión antes de dejar pasar un envío.</p>
-
-  <div class="card">
-    <div class="card-header">Vista previa</div>
-    <div class="card-body">
-      <div class="duan-widget-container" data-sitekey="duan_demo_sitekey_0001"></div>
+  <div class="tag">Anti-bots</div>
+</header><div class="wrap"><h1>Panel de verificación</h1>
+<p class="lead">Sistema de verificación por comportamiento antes de permitir envíos.</p><div class="card">
+  <div class="card-header">Vista previa</div>
+  <div class="card-body">
+    <div class="duan-widget-container" data-sitekey="demo"></div>
+  </div>
+</div><div class="card">
+  <div class="card-header">Credenciales</div>
+  <div class="card-body">
+    <button class="btn" id="genBtn">Generar claves</button>
+    <div id="keysOut"></div>
+    <div class="warn" id="warnMsg" style="display:none">
+      Guarda la secret key ahora.
     </div>
   </div>
+</div><div class="card">
+  <div class="card-header">Guía</div>
+  <table>
+    <tr>
+      <td class="step-n">1</td>
+      <td>
+        Agrega el widget:
+<pre>&lt;div class="duan-widget-container" data-sitekey="TU_KEY"&gt;&lt;/div&gt;
+&lt;script src="/duan-widget.js"&gt;&lt;/script&gt;</pre>
+      </td>
+    </tr><tr>
+  <td class="step-n">2</td>
+  <td>
+    Valida en backend:
 
-  <div class="card">
-    <div class="card-header">Credenciales</div>
-    <div class="card-body">
-      <button class="btn" id="genBtn">Generar site key + secret key</button>
-      <div class="keys" id="keysOut"></div>
-      <div class="warn" id="warnMsg" style="display:none">Guardá la secret key ahora, no se vuelve a mostrar.</div>
-    </div>
-  </div>
-
-  <div class="card">
-    <div class="card-header">Guía de integración</div>
-    <table>
-      <thead>
-        <tr><th>Paso</th><th>Instrucción</th></tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td class="step-n">1</td>
-          <td>
-            Insertá el widget en la página que querés proteger, usando la site key generada arriba.
-            <pre>&lt;div class="duan-widget-container" data-sitekey="TU_SITE_KEY"&gt;&lt;/div&gt;
-&lt;script src="<span id="originSpan">https://tu-app.onrender.com</span>/duan-widget.js" async defer&gt;&lt;/script&gt;</pre>
-            <p class="note">Al verificarse, se crea un input oculto <code>duan-response</code> dentro del <code>&lt;form&gt;</code> más cercano.</p>
-          </td>
-        </tr>
-        <tr>
-          <td class="step-n">2</td>
-          <td>
-            En tu backend, al recibir el formulario, validá el token contra Duan usando tu secret key.
-            <pre>const r = await fetch("<span class="originJs">https://tu-app.onrender.com</span>/api/duan/siteverify", {
+<pre>const r = await fetch("/api/verify", {
   method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({
-    token: req.body["duan-response"],
-    secret: "TU_SECRET_KEY"
-  })
-});
-const { success } = await r.json();</pre>
-          </td>
-        </tr>
-        <tr>
-          <td class="step-n">3</td>
-          <td>
-            Si <code>success</code> es <code>false</code>, rechazá el envío antes de procesar el resto de la lógica.
-            <pre>if (!success) return res.status(403).json({ error: "verificación fallida" });</pre>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+  body: JSON.stringify({ token })
+});</pre>  </td>
+</tr>
 
-  <footer id="originFooter"></footer>
-</div>
+<tr>
+  <td class="step-n">3</td>
+  <td>
+    Bloquea si falla:
 
-<script src="/duan-widget.js"></script>
-<script>
-  document.getElementById('originSpan').textContent = window.location.origin;
-  document.querySelectorAll('.originJs').forEach(el => el.textContent = window.location.origin);
-  document.getElementById('originFooter').textContent = 'Duan · ' + window.location.host;
+<pre>if (!success) return 403;</pre>  </td>
+</tr>
 
-  document.getElementById('genBtn').addEventListener('click', async () => {
-    const btn = document.getElementById('genBtn');
-    btn.disabled = true;
-    btn.textContent = 'Generando...';
-    try {
-      const r = await fetch('/api/keys', { method: 'POST' });
-      const data = await r.json();
-      document.getElementById('keysOut').innerHTML = `
-        <div class="keys-row"><b>Site key</b><span>${data.siteKey}</span></div>
-        <div class="keys-row"><b>Secret key</b><span>${data.secretKey}</span></div>
-      `;
-      document.getElementById('warnMsg').style.display = 'block';
-    } catch {
-      document.getElementById('keysOut').textContent = 'Error generando las llaves.';
-    }
-    btn.disabled = false;
-    btn.textContent = 'Generar site key + secret key';
-  });
-</script>
-</body>
+  </table>
+</div><footer id="originFooter"></footer></div><script src="/duan-widget.js"></script><script>
+document.getElementById('originFooter').textContent = location.host;
+
+document.getElementById('genBtn').onclick = async () => {
+  const btn = document.getElementById('genBtn');
+  btn.disabled = true;
+  btn.textContent = "Generando...";
+
+  try {
+    const r = await fetch('/api/keys', { method: 'POST' });
+    const d = await r.json();
+
+    document.getElementById('keysOut').innerHTML = `
+      <div class="keys-row"><b>Site key</b><span>${d.siteKey}</span></div>
+      <div class="keys-row"><b>Secret key</b><span>${d.secretKey}</span></div>
+    `;
+
+    document.getElementById('warnMsg').style.display = 'block';
+
+  } catch {
+    document.getElementById('keysOut').textContent = 'Error';
+  }
+
+  btn.disabled = false;
+  btn.textContent = "Generar claves";
+};
+</script></body>
 </html>
