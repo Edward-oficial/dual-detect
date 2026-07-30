@@ -7,22 +7,20 @@
 
   .duan-box {
     font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Helvetica Neue', Arial, sans-serif;
-    background: #ffffff;
-    border: 1px solid #e5e5ea;
+    background: #000000;
+    border: 1px solid #2c2c2e;
     border-radius: 16px;
     padding: 0;
     width: 100%;
     max-width: 302px;
-    color: #000000;
+    color: #ffffff;
     box-sizing: border-box;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.08);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6), 0 1px 3px rgba(255, 255, 255, 0.05);
     transition: all 0.2s ease;
   }
 
   .duan-box.locked {
-    opacity: 0.55;
+    opacity: 0.45;
     pointer-events: none;
   }
 
@@ -56,35 +54,34 @@
     opacity: 0.6;
   }
 
-  /* Checkbox - iOS style */
+  /* Checkbox - iOS dark style */
   .duan-checkbox {
     width: 28px;
     height: 28px;
-    border: 2px solid #c6c6c8;
+    border: 2px solid #48484a;
     border-radius: 8px;
     position: relative;
     flex-shrink: 0;
-    background: #ffffff;
+    background: #1c1c1e;
     transition: all 0.2s cubic-bezier(0.25, 0.1, 0.25, 1);
   }
 
   .duan-checkbox.verified {
-    border-color: #007aff;
-    background: #007aff;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 122, 255, 0.3);
+    border-color: #0a84ff;
+    background: #0a84ff;
+    box-shadow: 0 2px 10px rgba(10, 132, 255, 0.4);
   }
 
   .duan-checkbox.busy {
-    border-color: #007aff;
-    background: #ffffff;
+    border-color: #0a84ff;
+    background: #1c1c1e;
   }
 
   .duan-spinner {
     position: absolute;
     inset: 3px;
     border: 2.5px solid transparent;
-    border-top-color: #007aff;
+    border-top-color: #0a84ff;
     border-radius: 50%;
     animation: duan-spin 0.7s linear infinite;
   }
@@ -107,7 +104,7 @@
   /* Label */
   .duan-label {
     font-size: 15px;
-    color: #000000;
+    color: #ffffff;
     font-weight: 500;
     line-height: 1.3;
     letter-spacing: -0.2px;
@@ -115,7 +112,7 @@
 
   .duan-label small {
     display: block;
-    color: #8e8e93;
+    color: #98989d;
     font-size: 11px;
     font-weight: 400;
     margin-top: 3px;
@@ -126,7 +123,7 @@
   .duan-hc-divider {
     width: 1px;
     align-self: stretch;
-    background: #e5e5ea;
+    background: #2c2c2e;
     margin: 12px 4px;
   }
 
@@ -144,15 +141,15 @@
   .duan-hc-logo {
     font-family: 'Noto Serif SC', 'Songti SC', 'STSong', serif;
     font-size: 22px;
-    color: #000000;
+    color: #ffffff;
     font-weight: 700;
     line-height: 1;
-    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.1);
   }
 
   .duan-hc-name {
     font-size: 10px;
-    color: #8e8e93;
+    color: #98989d;
     font-weight: 600;
     letter-spacing: 0.5px;
     text-transform: uppercase;
@@ -160,7 +157,7 @@
 
   .duan-hc-links {
     font-size: 8px;
-    color: #aeaeb2;
+    color: #636366;
     margin-top: 4px;
     text-align: center;
     line-height: 1.3;
@@ -172,14 +169,14 @@
     align-items: center;
     gap: 8px;
     font-size: 13px;
-    color: #8e8e93;
+    color: #98989d;
     margin: 14px 16px 12px;
     font-weight: 500;
   }
 
   .duan-title b {
     font-family: 'Noto Serif SC', 'Songti SC', serif;
-    color: #007aff;
+    color: #0a84ff;
     font-weight: 700;
     font-size: 18px;
   }
@@ -194,9 +191,9 @@
     height: 50px;
     border-radius: 25px;
     overflow: hidden;
-    border: 1.5px solid #e5e5ea;
-    background: #f9f9fb;
-    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.04);
+    border: 1.5px solid #2c2c2e;
+    background: #1c1c1e;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.4);
   }
 
   .duan-slot {
@@ -205,7 +202,7 @@
     width: 34px;
     height: 34px;
     border-radius: 50%;
-    border: 2.5px dashed #007aff;
+    border: 2.5px dashed #0a84ff;
     opacity: 0.5;
     box-sizing: border-box;
     transition: left 0.3s ease;
@@ -220,20 +217,20 @@
     border-radius: 50%;
     cursor: grab;
     touch-action: none;
-    background: #d1d1d6;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12), inset 0 0 0 2px rgba(255, 255, 255, 0.6);
+    background: #48484a;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4), inset 0 0 0 2px rgba(255, 255, 255, 0.1);
     transition: background 0.2s ease, box-shadow 0.2s ease, transform 0.1s ease;
   }
 
   .duan-piece:active {
     cursor: grabbing;
     transform: scale(1.05);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15), inset 0 0 0 2px rgba(255, 255, 255, 0.6);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5), inset 0 0 0 2px rgba(255, 255, 255, 0.15);
   }
 
   .duan-piece.solved {
-    background: #007aff;
-    box-shadow: 0 0 0 4px rgba(0, 122, 255, 0.2), inset 0 0 0 2px rgba(255, 255, 255, 0.3);
+    background: #0a84ff;
+    box-shadow: 0 0 0 4px rgba(10, 132, 255, 0.25), inset 0 0 0 2px rgba(255, 255, 255, 0.2);
     cursor: default;
   }
 
@@ -241,22 +238,22 @@
   .duan-msg {
     margin: 12px 16px 0;
     font-size: 12px;
-    color: #8e8e93;
+    color: #98989d;
     min-height: 16px;
     font-weight: 400;
     letter-spacing: -0.1px;
   }
 
   .duan-msg.err {
-    color: #ff3b30;
+    color: #ff453a;
   }
 
   .duan-msg.ok {
-    color: #007aff;
+    color: #30d158;
     font-weight: 600;
   }
 
-  /* Smooth transitions for message changes */
+  /* Smooth transitions */
   .duan-msg, .duan-label, .duan-checkbox {
     transition: color 0.15s ease, background 0.2s ease, border-color 0.2s ease;
   }
